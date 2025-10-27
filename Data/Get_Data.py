@@ -19,9 +19,7 @@ def check_nc_file(file_path):
 
 
 # read the data and make sure it works:
-data_path = input('Input the data path to the data: ')
+data_path = input('Input the path to the data you want to analyse: ')
 check_nc_file(data_path)
-# check_nc_file('/root/Example_data/tg_ens_mean_0.25deg_reg_v30.0e.nc')
-
-# if __name__ == "__main__":
+# Original path: '/root/Example_data/tg_ens_mean_0.25deg_reg_v30.0e.nc'
 
