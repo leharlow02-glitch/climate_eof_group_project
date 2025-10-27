@@ -35,7 +35,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip install .[dev]
+        pip install -r virtual_environment_requirements.txt
 
     - name: Lint with flake8
       run: |
