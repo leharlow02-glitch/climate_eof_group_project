@@ -22,4 +22,3 @@ def check_nc_file(file_path):
 data_path = input('Input the path to the data you want to analyse: ')
 check_nc_file(data_path)
 # Original path: '/root/Example_data/tg_ens_mean_0.25deg_reg_v30.0e.nc'
-
