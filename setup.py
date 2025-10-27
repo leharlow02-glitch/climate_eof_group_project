@@ -12,7 +12,7 @@ def get_version():
     import sys
 
     sys.path.append(os.path.abspath('simple_climate_package'))
-    from version_info import VERSION as version
+    from simple_climate_package.version_info import VERSION as version
     sys.path.pop()
     return version
 
