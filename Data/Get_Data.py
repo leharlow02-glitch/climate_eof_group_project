@@ -9,7 +9,8 @@ def check_nc_file(file_path):
         return
     try:
         ds = xr.open_dataset(file_path)
-        print(f"\nOpened: {file_path}")
+        print('\nThe data exists, go on with analysis :)')
+        print(f"Opened: {file_path}")
         print("Dimensions:", ds.dims)
         print("Variables:", list(ds.data_vars))
         ds.close()
@@ -17,8 +18,10 @@ def check_nc_file(file_path):
         print(f"Error reading {file_path}: {e}")
 
 
-check_nc_file('/root/Example_data/mean_temperature.nc')
+# read the data and make sure it works:
+data_path = input('Input the data path to the data: ')
+check_nc_file(data_path)
+# check_nc_file('/root/Example_data/tg_ens_mean_0.25deg_reg_v30.0e.nc')
 
 # if __name__ == "__main__":
-    
-    
+
