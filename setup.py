@@ -6,20 +6,14 @@ from setuptools import setup, find_packages
 
 def get_version():
     """
-    Get version number from the pkmodel module.
-
-    The easiest way would be to just ``import pkmodel ``, but note that this may
-    fail if the dependencies have not been installed yet. Instead, we've put
-    the version number in a simple version_info module, that we'll import here
-    by temporarily adding the oxrse directory to the pythonpath using sys.path.
+    Get version number from the simple_climate_package module.
     """
     import os
     import sys
 
-    sys.path.append(os.path.abspath('pkmodel'))
+    sys.path.append(os.path.abspath('simple_climate_package'))
     from version_info import VERSION as version
     sys.path.pop()
-
     return version
 
 
@@ -34,37 +28,21 @@ def get_readme():
 # Go!
 setup(
     # Module name (lowercase)
-    name='pkmodel',
+    name='simple_climate_package',
 
     # Version
     version=get_version(),
-
     description='An example Python project.',
-
     long_description=get_readme(),
-
     license='MIT license',
-
-    # author='',
-
-    # author_email='',
-
+    author='Hannah-Jane Wood, Lucy Harlow, Ofer Cohen',
+    author_email='lucy.harlow@reuben.ox.ac.uk',
     maintainer='Martin Robinson',
-
     maintainer_email='martin.robinson@cs.ox.ac.uk',
-
-    url='https://github.com/SABS-R3/2020-software-engineering-projects-pk',
-
+    url='https://github.com/leharlow02-glitch/climate_eof_group_project',
     # Packages to include
-    packages=find_packages(include=('pkmodel', 'pkmodel.*')),
-
+    packages=find_packages(include=('simple_climate_package', 'simple_climate_package.*')),
     # List of dependencies
-    install_requires=[
-        # Dependencies go here!
-        'numpy',
-        'matplotlib',
-        'scipy',
-    ],
     extras_require={
         'docs': [
             # Sphinx for doc generation. Version 1.7.3 has a bug:
@@ -75,6 +53,9 @@ setup(
         'dev': [
             # Flake8 for code style checking
             'flake8>=3',
+            'pytest',
+            'build'
         ],
     },
+    python_requires='>=3.8',
 )
