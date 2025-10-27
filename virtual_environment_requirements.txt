@@ -15,6 +15,7 @@ multiurl==0.3.7
 netCDF4==1.7.3
 numpy==2.3.4
 packaging==25.0
+pandas==2.3.3
 pillow==12.0.0
 pyparsing==3.2.5
 pyproj==3.7.2
@@ -27,4 +28,6 @@ shapely==2.1.2
 six==1.17.0
 tqdm==4.67.1
 typing_extensions==4.15.0
+tzdata==2025.2
 urllib3==2.5.0
+xarray==2025.10.1
