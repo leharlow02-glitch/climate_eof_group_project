@@ -15,14 +15,19 @@ To ensure the use of the same packages and dependencies, please follow these ste
 These commands are for bash. 
 
 ### Step 1: Clone the repository
-***bash
+```bash
 git clone <repo_url>
 cd <repo_name>
+```
 
 ### Step 2: Create and activate a virtual environment
+```bash
 python3 -m venv env
 source env/bin/activate
+```
 
 ### Step 3: Install dependencies from virtual_environment_requirements.txt
+```bash 
 pip install -r virtual_environment_requirements.txt
+```
 
