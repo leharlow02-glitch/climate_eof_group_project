@@ -1,4 +1,3 @@
-
 import xarray as xr
 import os
 import sys
@@ -28,35 +27,35 @@ def read_data(data_path):
     print(ds.variables)     # List of variables
     print('\nCoordinates:')
     print(ds.coords)        # Coordinate variables
+    return ds
 
 
-    # Data = Dataset(data_path,mode='r')
-    # lon = Data.variables['longitude'][:]
-    # lat = Data.variables['latitude'][:]
-    # time = Data.variables['time'][:]
-    # time_units = Data.variables['time'].units
-    # # date = Data.variables['date'][:]
-    # tg = Data.variables['tg'][:]
-    # tg_units = Data.variables['tg'].units
-    # print('shape of the Data:')
-    # print(tg.shape)
-    # print('units of ground temperature:')
-    # print(tg_units)
-    # print('printing Lon start and end:')
-    # print(lon[0])
-    # print(lon[-1])
-    # print('printing Lat start and end:')
-    # print(lat[0])
-    # print(lat[-1])
-    # print('printing time start and end:')
-    # print(time[0])
-    # print(time[-1])
-    # print(f'the time units are: {time_units}')
+def plot_time_mean(ds, var="tg", out_path="/root/climate_eof_group_project/plots/time_mean.png"):
+    """Compute mean of `var` over time and save plot to `out_path`."""
+    temp_mean = calculate_time_mean(ds)
+    plt.figure()
+    ax = temp_mean.plot()
+    plt.title(f"Mean {var} from {ds.time.min().values} to {ds.time.max().values}")
+    plt.savefig(out_path, dpi=150, bbox_inches="tight")
+    plt.close()  # good practice in scripts
+    print(f"Plot saved to: {out_path}")
 
-# read the data and make sure it works:
+# def plot_time_mean():
+#     temp_mean = calculate_time_mean(ds)
+#     print(temp_mean.shape)
+#     print(temp_mean)
+#     temp_mean.plot()
+#     plt.title('mean ground temperature from 1/1/1950 to 30/06/2024')
+#     # plt.show()
+#     plt.savefig("temp_mean.png", dpi=150, bbox_inches="tight")
+#     print("Plot saved to temp_mean.png")
+
+def calculate_time_mean(ds):
+    return ds["tg"].mean(dim="time")
+
 print('Example data for the UK can be found here on the github repository: /root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc' )
 data_path = input('Input the path to the data you want to analyse: ')
-# data_path = '/root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc'
+
 check_nc_file(data_path)
-read_data(data_path)
-# Original path: '/root/Example_data/tg_ens_mean_0.25deg_reg_v30.0e.nc'
+ds = read_data(data_path)
+plot_time_mean(ds)
