@@ -3,6 +3,7 @@ import xarray as xr
 import os
 import sys
 from netCDF4 import Dataset
+import matplotlib.pyplot as plt
 
 def check_nc_file(file_path):
     if not os.path.exists(file_path):
@@ -20,22 +21,37 @@ def check_nc_file(file_path):
 
 ## read data for analysis:
 def read_data(data_path):
-    Data = Dataset(data_path,mode='r')
-    lons = Data.variables['longitude'][:]
-    lats = Data.variables['latitude'][:]
-    tg = Data.variables['tg'][:]
-    tg_units = Data.variables['tg'].units
-    print('shape of the Data:')
-    print(tg.shape)
-    print('units of ground temperature:')
-    print(tg_units)
-    print('printing Lon start and end:')
-    print(lons[0])
-    print(lons[-1])
-    print('printing Lat start and end:')
-    print(lats[0])
-    print(lats[-1])
-    
+    ds = xr.open_dataset(data_path)
+    print('\nOverview:')
+    print(ds)
+    print('\nVariables:')
+    print(ds.variables)     # List of variables
+    print('\nCoordinates:')
+    print(ds.coords)        # Coordinate variables
+
+
+    # Data = Dataset(data_path,mode='r')
+    # lon = Data.variables['longitude'][:]
+    # lat = Data.variables['latitude'][:]
+    # time = Data.variables['time'][:]
+    # time_units = Data.variables['time'].units
+    # # date = Data.variables['date'][:]
+    # tg = Data.variables['tg'][:]
+    # tg_units = Data.variables['tg'].units
+    # print('shape of the Data:')
+    # print(tg.shape)
+    # print('units of ground temperature:')
+    # print(tg_units)
+    # print('printing Lon start and end:')
+    # print(lon[0])
+    # print(lon[-1])
+    # print('printing Lat start and end:')
+    # print(lat[0])
+    # print(lat[-1])
+    # print('printing time start and end:')
+    # print(time[0])
+    # print(time[-1])
+    # print(f'the time units are: {time_units}')
 
 # read the data and make sure it works:
 print('Example data for the UK can be found here on the github repository: /root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc' )
