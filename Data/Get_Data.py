@@ -21,8 +21,10 @@ def check_nc_file(file_path):
 ## read data for analysis:
 def read_data(data_path):
     Data = Dataset(data_path,mode='r')
-    lons = Data.variables['longitude'][:]
-    lats = Data.variables['latitude'][:]
+    lon = Data.variables['longitude'][:]
+    lat = Data.variables['latitude'][:]
+    time = Data.variables['time'][:]
+    time_units =  Data.variables['time'].units
     tg = Data.variables['tg'][:]
     tg_units = Data.variables['tg'].units
     print('shape of the Data:')
@@ -30,12 +32,15 @@ def read_data(data_path):
     print('units of ground temperature:')
     print(tg_units)
     print('printing Lon start and end:')
-    print(lons[0])
-    print(lons[-1])
+    print(lon[0])
+    print(lon[-1])
     print('printing Lat start and end:')
-    print(lats[0])
-    print(lats[-1])
-    
+    print(lat[0])
+    print(lat[-1])
+    print('printing time start and end:')
+    print(time[0])
+    print(time[-1])
+    print(f'the time units are: {time_units}')
 
 # read the data and make sure it works:
 print('Example data for the UK can be found here on the github repository: /root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc' )
