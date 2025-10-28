@@ -1,5 +1,5 @@
 #
-# Test module for pkmodel.
+# Test module for simple_climate_package.
 #
 # To run all tests, use ``python -m unittest discover``.
 #

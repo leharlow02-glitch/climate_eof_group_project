@@ -41,7 +41,8 @@ setup(
     maintainer_email='martin.robinson@cs.ox.ac.uk',
     url='https://github.com/leharlow02-glitch/climate_eof_group_project',
     # Packages to include
-    packages=find_packages(include=('simple_climate_package', 'simple_climate_package.*')),
+    packages=find_packages(
+        include=('simple_climate_package', 'simple_climate_package.*')),
     # List of dependencies
     extras_require={
         'docs': [

@@ -1,7 +1,14 @@
 [flake8]
-exclude=
-    ./.git,
-    ./pkmodel.egg-info,
+exclude =
+    .git,
+    pkmodel.egg-info,
+    venv,
+    .venv,
+    venv_gp,
+    env,
+    build,
+    dist,
+    __pycache__
 ignore=
     # Block comment should start with '# '
     # Not if it's a commented out line
