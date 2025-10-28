@@ -1,3 +1,4 @@
+
 import xarray as xr
 import os
 import sys
@@ -37,8 +38,9 @@ def read_data(data_path):
     
 
 # read the data and make sure it works:
-# data_path = input('Input the path to the data you want to analyse: ')
-data_path = '/root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc'
+print('Example data for the UK can be found here on the github repository: /root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc' )
+data_path = input('Input the path to the data you want to analyse: ')
+# data_path = '/root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc'
 check_nc_file(data_path)
 read_data(data_path)
 # Original path: '/root/Example_data/tg_ens_mean_0.25deg_reg_v30.0e.nc'
