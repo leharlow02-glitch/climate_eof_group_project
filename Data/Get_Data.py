@@ -60,13 +60,3 @@ data_path = input('Input the path to the data you want to analyse: ')
 check_nc_file(data_path)
 read_data(data_path)
 # Original path: '/root/Example_data/tg_ens_mean_0.25deg_reg_v30.0e.nc'
-
-def plot_time_mean():
-    temp_mean = ds["tg"].mean(dim="time")
-    print(temp_mean.shape)
-    print(temp_mean)
-    temp_mean.plot()
-    plt.title('mean ground temperature from 1/1/1950 to 30/06/2024')
-    # plt.show()
-    plt.savefig("temp_mean.png", dpi=150, bbox_inches="tight")
-    print("Plot saved to temp_mean.png")
