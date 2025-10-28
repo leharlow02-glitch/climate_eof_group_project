@@ -5,9 +5,9 @@ name: Python versions
 
 on:
   push:
-    branches: [ "dev", "main" ]
+    branches: [ "dev", "main", "hannah" ]
   pull_request:
-    branches: [ "dev", "main" ]
+    branches: [ "dev", "main", "hannah" ]
   workflow_dispatch:
 
 jobs:
