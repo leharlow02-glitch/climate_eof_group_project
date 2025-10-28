@@ -4,6 +4,7 @@ from scipy.stats import t
 import matplotlib.pyplot as plt
 import xarray as xr
 import matplotlib.colors as mcolors
+from functools import wraps
 
 ###Writing linear regression calculation and plotting class###
 
@@ -25,9 +26,16 @@ class linear_regression():
         self.results = {}
 
     #computing monthly anoms by subtracting the climatological mean
-    def compute_monthly_anoms(self, baseline):
-        baseline = ('1961-01-01', '1990-12-31')
-        base = self.da.sel(time=slice(baseline))
+    def compute_monthly_anoms(self, baseline=None):
+
+        if baseline is None:
+            base = self.da
+        else:
+            try:
+                start,end = baseline
+            except Exception:
+                raise ValueError('Baseline must be a typle or None')
+            base = self.da.sel(time=slice(start,end))
         clim = base.groupby('time.month').mean('time')
         self.anoms = self.da.groupby('time.month') - clim
         print(self.anoms)
@@ -52,7 +60,7 @@ class linear_regression():
     
     def ignore_numpy_warmings(func):
         """ Runs function inside np.errstat(invalid='ignore', divide='ignore)"""
-        @wrapper(func)
+        @wraps(func)
         def wrapper(*args, **kwargs):
             with np.errstate(invalid='ignore', divide= 'ignore'):
                 return func(*args, **kwargs)
