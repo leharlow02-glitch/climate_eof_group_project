@@ -22,7 +22,7 @@ class linear_regression():
         #variables names and creating empty fields for computing
         self.lat = 'lat' if 'lat' in self.da.coords else 'latitude'
         self.lon= 'lon' if 'lon' in self.da.coords else 'longitude'
-        self.anoms = None 
+        self.anoms = [] 
         self.results = {}
 
     #computing monthly anoms by subtracting the climatological mean
@@ -54,9 +54,9 @@ class linear_regression():
         days_in_year= np.where(is_leap, 366, 365)
         self.x = years + (doy - 1)/ days_in_year
         print(self.x)
-        if self.x != self.anoms:
-            raise ValueError('Time dimensions do not match')
-        return self.x
+        #if self.x != self.anoms:
+         #   raise ValueError('Time dimensions do not match')
+        #return self.x
     
     def ignore_numpy_warmings(func):
         """ Runs function inside np.errstat(invalid='ignore', divide='ignore)"""
