@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ['3.10', '3.11', '3.12', '3.x']
+        python: ['3.11', '3.12', '3.x']
 
     steps:
     - uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
         uname -a || ver
         python --version
 
-    - name: Set up Python (latest 3.x)
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python }}
