@@ -52,9 +52,9 @@ class linear_regression():
     
     def ignore_numpy_warmings(func):
         """ Runs function inside np.errstat(invalid='ignore', divide='ignore)"""
-        @wraps(func)
+        @wrapper(func)
         def wrapper(*args, **kwargs):
-            with np.errstate(invalid='ignore', divide= 'ignore')
+            with np.errstate(invalid='ignore', divide= 'ignore'):
                 return func(*args, **kwargs)
         return wrapper
     
@@ -154,7 +154,7 @@ class linear_regression():
 
         #Calcuating t-statistics and p-values
         t_stat = slope/ se_slope
-        p_value = 2.0 * t.sf(np.abs(tvals), df)
+        p_value = 2.0 * t.sf(np.abs(t_stat), df)
 
         #Calculating R squared and RMSE
         SST = np.sum(((Yf- Y_mean.reshape(1,N_grid)) * valid)** 2, axis=0)
@@ -162,7 +162,7 @@ class linear_regression():
         rmse = np.sqrt(SSR/n_obs)
 
         #reshape to (ny,nx)
-        def to grid(a):
+        def to_grid(a):
             return a.reshape(ny, nx)
         
         self.results = {
@@ -189,13 +189,13 @@ class linear_regression():
         Lon, Lat = np.meshgrid(lons, lats)
 
         #create figure
-        fix, ax = plt.subplots(figsize= (7,6))
+        fig, ax = plt.subplots(figsize= (7,6))
         
         #making significance mask
         p_95 = np.ma.masked_greater(p_val, 0.05)
 
         #constraints on colourbar for plotting
-        vmin, vmax = np.nanmin(per_decade), np.nanmax(per_decade)
+        vmin, vmax = np.nanmin(field), np.nanmax(field)
 
         #plotting
         plot= plt.contourf(Lon, Lat, field, levels= 100,
@@ -206,7 +206,7 @@ class linear_regression():
         #creating colourbar
         cbar = fig.colorbar(plot, orientation= 'horizontal', shrink= 0.7, pad=0.27)
         cbar.set_label('Change in slope per decade', rotation = 0, fontsize= 8)
-        tick_min, tick_max = np.nanmin(per_decade), np.nanmax(per_decade)
+        tick_min, tick_max = np.nanmin(field), np.nanmax(field)
         ticks = np.linspace(tick_min, tick_max, 6) #creates 6 evenly spaced ticks
         cbar.set_ticks(ticks)
         cbar.ax.set_xticklabels([f"t:.2f" for t in ticks]) #formats to 2 decimal places
