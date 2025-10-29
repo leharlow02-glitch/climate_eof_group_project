@@ -1,13 +1,28 @@
 import xarray as xr
 import matplotlib.pyplot as plt
+import os
 
 
 class TempExtremes:
-
     def __init__(self, filepath, varname='tg'):
-        # open the dataset when you create the object
-        self.ds = xr.open_dataset(filepath, decode_times=True)
-        self.tg = self.ds[varname]
+
+        # check the file exists
+        if not os.path.exists(filepath):
+            FileNotFoundError(f"File not found: {filepath}")
+
+        # try to open the dataset
+        try:
+            self.ds = xr.open_dataset(filepath, decode_times=True)
+            print('\nThe data exists, go on with analysis :)')
+            print(f"Opened: {filepath}")
+            print("Dimensions:", self.ds.dims)
+            print("Variables:", list(self.ds.data_vars))
+
+        # store the temperature variable
+            self.tg = self.ds[varname]
+
+        except Exception as e:
+            raise RuntimeError(f"Error reading {filepath}: {e}")
 
     def min_between(self, start, end, save_as='min.png'):
         # Identify the minimum temperature values between two dates and plot
@@ -67,22 +82,23 @@ class TempExtremes:
 
         return float(self.tg.max())
 
-    '''def calc_monthly_max(self):
+    def monthly_max(self):
         return self.tg.resample(time="1M").max()
 
-    def calc_monthly_min(self):
+    def monthly_min(self):
         return self.tg.resample(time="1M").min()
 
-    def calc_yearly_max(self):
+    def yearly_max(self):
         return self.tg.resample(time="1YE").max()
 
-    def calc_yearly_min(self):
-        return self.tg.resample(time="1YE").min()'''
+    def yearly_min(self):
+        return self.tg.resample(time="1YE").min()
 
 # run from root of package
 temp = TempExtremes('Data/Example_Data/e-obs_UK_ground_temp.nc')
 
-print(temp.min_between('1950-01-01', '1955-01-01'))
+'''print(temp.min_between('1950-01-01', '1955-01-01'))
 print(temp.max_between('1950-01-01', '1955-01-01'))
 print(temp.min_tot())
 print(temp.max_tot())
+print(type(temp.calc_monthly_max()))'''
