@@ -14,9 +14,11 @@ class linear_regression():
     slope change per decade over a spatial map """
 
     #reading in data function
-    def __init__(self, data_dir_path):
+    def __init__(self, data_dir_path, varname=None):
         self.ds = xr.open_dataset(data_dir_path)
-        varname = list(self.ds.data_vars)[0]
+        if varname is None:
+            varname = list(self.ds.data_vars)[0]
+        self.varname = varname
         self.da = self.ds[self.varname]
 
         #variables names and creating empty fields for computing
@@ -57,7 +59,7 @@ class linear_regression():
         if self.annual is None:
             self.make_yearly()
         
-        da = self.annual.transpose('time', self.la, self.lon)
+        da = self.annual.transpose('time', self.lat, self.lon)
         y = da.values[:,:,:] #3D array with time, lat, lon
 
         years = da['time'].dt.year.values.astype(float)
@@ -115,7 +117,7 @@ class linear_regression():
         intercept[ok_pix] = Y_mean[ok_pix] - slope_ok * X_mean[ok_pix]
 
         #Compute slope per decade and over whole dataset
-        total_change = slope * (x[-1] - x[0])
+        total_change = slope * (years[-1] - years[0])
         per_decade = slope * 10.0
 
         #Comparing model_predicted values and residuals
@@ -144,21 +146,27 @@ class linear_regression():
         r2 = 1.0 - SSR/SST
         rmse = np.sqrt(SSR/n_obs)
 
+        lat_vals = da.coords[self.lat].values
+        lon_vals = da.coords[self.lon].values
+
         #reshape to (ny,nx)
         def to_grid(a):
             return a.reshape(ny, nx)
         
-        self.results = {
-            'slope': to_grid(slope),
-            'intercept': to_grid(intercept),
-            't_stat': to_grid(t_stat),
-            'p_value': to_grid(p_value),
-            'r2': to_grid(r2),
-            'rmse': to_grid(rmse),
-            'n_obs': to_grid(n_obs),
-            'per_decade': to_grid(per_decade),
-            'total_change': to_grid(total_change)
-        }
+        ds_out = xr.Dataset({
+            'slope': ((self.lat, self.lon), to_grid(slope)),
+            'intercept': ((self.lat, self.lon),to_grid(intercept)),
+            't_stat':((self.lat, self.lon), to_grid(t_stat)),
+            'p_value': ((self.lat, self.lon),to_grid(p_value)),
+            'r2': ((self.lat, self.lon),to_grid(r2)),
+            'rmse': ((self.lat, self.lon),to_grid(rmse)),
+            'n_obs': ((self.lat, self.lon),to_grid(n_obs)),
+            'per_decade': ((self.lat, self.lon),to_grid(per_decade)),
+            'total_change': ((self.lat, self.lon),to_grid(total_change)),
+        }, coords = {self.lat: lat_vals,
+                     self.lon: lon_vals})
+        
+        self.results = ds_out
         return self.results
 
     def quick_plot_signif_stippling(self, key='per_decade'):
