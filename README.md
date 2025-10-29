@@ -43,7 +43,7 @@ pip install -r virtual_environment_requirements.txt
 
 ## Installing without a virtual environment
 
-For general use of this package without a virtual environment, please follow these steps.
+For general use of this package without a virtual environment, please import using pip install.
 
 ```bash 
 pip install simple_climate_package
@@ -53,11 +53,9 @@ pip install simple_climate_package
 
 This package was developed to work with E-OBS daily gridded mean temperature data from 1950 to present. 
 
-A sample dataset for data over The United Kinbdom from 1950 to present can be found in the Data folder located in the simple_climate_package folder.
+A sample dataset for data over The United Kingdom from 1950 to present can be found in the Data folder located in the simple_climate_package folder.
 
 To use your own data, please copy this code into a script.
-
-This script should run through your newly created virtual environment.
 
 ```python
 import cdsapi
