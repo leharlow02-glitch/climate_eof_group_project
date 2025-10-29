@@ -22,52 +22,25 @@ class linear_regression():
         #variables names and creating empty fields for computing
         self.lat = 'lat' if 'lat' in self.da.coords else 'latitude'
         self.lon= 'lon' if 'lon' in self.da.coords else 'longitude'
-        self.anoms = [] 
+        self.anoms = None 
         self.results = {}
 
-    #computing monthly anoms by subtracting the climatological mean
-    def compute_monthly_anoms(self, baseline=None):
+    #resampling daily data to years
+    def make_yearly(self, how='mean'):
+        self.annual = self.da.resample(time='1YS').reduce(getattr(np,how))
+        return self.annual
 
-        if baseline is None:
-            base = self.da
-        else:
-            try:
-                start,end = baseline
-            except Exception:
-                raise ValueError('Baseline must be a typle or None')
-            base = self.da.sel(time=slice(start,end))
-        clim = base.groupby('time.month').mean('time')
-        self.anoms = self.da.groupby('time.month') - clim
-        print(self.anoms)
-        return self.anoms
-    
-    #computing fractional years
-    """since array is daily, fractional years are needed 
-    to perform an accurate linear regression"""
 
-    def create_years(self):
-        #creates a 1D array of fractional years
-        time = self.da['time']
-        years = time.dt.year.values
-        doy = time.dt.dayofyear.values
-        is_leap = time.dt.is_leap_year.values
-        days_in_year= np.where(is_leap, 366, 365)
-        self.x = years + (doy - 1)/ days_in_year
-        print(self.x)
-        #if self.x != self.anoms:
-         #   raise ValueError('Time dimensions do not match')
-        #return self.x
-    
-    def ignore_numpy_warmings(func):
-        """ Runs function inside np.errstat(invalid='ignore', divide='ignore)"""
+    def ignore_numpy_warnings(func):
+        """ Runs functioninside np.errstat(invalid='ignore', divide='ignore)"""
         @wraps(func)
         def wrapper(*args, **kwargs):
             with np.errstate(invalid='ignore', divide= 'ignore'):
                 return func(*args, **kwargs)
         return wrapper
     
-    @ignore_numpy_warmings
-    def grid_linear_regression(self, use_anoms= True, min_obs=3):
+    @ignore_numpy_warnings
+    def grid_linear_regression(self, min_obs=3):
         """ Function computes a linear regression for each grid point in
         dataset's longitude-latitude grid. 
         
@@ -81,18 +54,20 @@ class linear_regression():
         - Root mean squared error (rmse)
         - intercept (intercept)
         """
-        da = self.anoms if (use_anoms and self.anoms is not None) else self.da
+        if self.annual is None:
+            self.make_yearly()
+        
+        da = self.annual.transpose('time', self.la, self.lon)
         y = da.values[:,:,:] #3D array with time, lat, lon
 
-        if self.x is None:
-            self.build_years(use_anoms=use_anoms)
-        x = self.x  # 1D array with fractional years
-        
+        years = da['time'].dt.year.values.astype(float)
+              
+
         #Validate data array shapes:
         if y.ndim != 3:
             raise ValueError('y must be 3D with shape (time ny, nx)')
         T, ny, nx = y.shape
-        if len(x) != T:
+        if len(years) != T:
             raise ValueError('Length of x must equal y shape[0] (time dimension)')
         
         #Create lon-lat grid
@@ -102,7 +77,7 @@ class linear_regression():
         Y = y.reshape(T, N_grid)
         
         #Reshape X so broadcasting occurs across the array correctly
-        X = np.asarray(x).reshape(T,1)
+        X = years.reshape(T,1)
         X_mat = np.broadcast_to(X, (T, N_grid))
 
         #Validate obs using mask and counts to mask NaNs
@@ -129,7 +104,7 @@ class linear_regression():
         Sxy = np.sum(Xc * Yc, axis=0)
 
         #Minimum data maks so variables are only computed where valid results are present
-        ok_pix = (n_obs >= min_obs) and (Sxx != 0)
+        ok_pix = (n_obs >= min_obs) & (Sxx != 0)
 
         #Create empty output files
         slope, intercept, t_stat, p_value, r2, rmse = [np.full(N_grid, np.nan, dtype=float) for i in range(6)]
@@ -192,7 +167,7 @@ class linear_regression():
         p_val = self.results['p_value']
 
         #set up spatial lon-lat grid
-        lons = self.da[self.long].values
+        lons = self.da[self.lon].values
         lats = self.da[self.lat].values
         Lon, Lat = np.meshgrid(lons, lats)
 
