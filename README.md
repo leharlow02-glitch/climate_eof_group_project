@@ -1,14 +1,24 @@
 # Simple_climate_package
 
-A simple climate analysis package that reads in netcdf data from E-Obs, performs simple statistical tests (see below) and visualises the outputs. 
+The open-source Python package **simple_climate_package** reads in netcdf data from E-OBS, performs simple statistical tests and visualises the outputs. 
 
 Statistical tests included in this package:
-- Linear regression
 - Minimum values
 - Maximum values
-- EOF analysis 
+- Mean values
+- Climate anomaly values
+- Linear regression
 
-# Setting up your Python virtual environment
+# Table of Contents
+1. Installation
+2. Usage
+3. Features
+4. Contributions
+5. License
+
+# 1. Installation
+
+## Installation using a virtual environment
 
 To ensure the use of the same packages and dependencies, please follow these steps when setting up your local environment.
 
@@ -31,3 +41,47 @@ source env/bin/activate
 pip install -r virtual_environment_requirements.txt
 ```
 
+## Installing without a virtual environment
+
+For general use of this package without a virtual environment, please follow these steps.
+
+```bash 
+pip install simple_climate_package
+```
+
+## Installing data
+
+This package was developed to work with E-OBS daily gridded mean temperature data from 1950 to present. 
+
+A sample dataset for data over The United Kinbdom from 1950 to present can be found in the Data folder located in the simple_climate_package folder.
+
+To use your own data, please copy this code into a script.
+
+This script should run through your newly created virtual environment.
+
+```python
+import cdsapi
+
+dataset = "insitu-gridded-observations-europe"
+request = {
+    "product_type": "ensemble_mean",
+    "variable": ["mean_temperature"],
+    "grid_resolution": "0_25deg",
+    "period": "full_period",
+    "version": ["30_0e"]
+}
+
+client = cdsapi.Client()
+client.retrieve(dataset, request).download()
+```
+
+# 3. Features
+
+
+
+# 4. Authors & Contributions
+
+This package was created by [Hannah-Jane Wood](https://github.com/hannahw0od), [Lucy Harlow](https://github.com/leharlow02-glitch), and [Ofer Cohen](https://github.com/ofer-cohen)
+
+# 5. License
+The simple_climate_package is licensed under the [MIT License](LICENSE) - see the LICENSE file for details
