@@ -44,7 +44,7 @@ def plot_time_mean(
     start_date = str(ds.time.min().values)[:10]
     end_date = str(ds.time.max().values)[:10]
     # Use variable’s long_name if available
-    #var_long_name = getattr(ds[var], "long_name", var)
+    # var_long_name = getattr(ds[var], "long_name", var)
     var_name = getattr(ds[var], "name", var)
     # plt.title(f"Mean {var_long_name} from {start_date} to {end_date}")
     plt.title(f"Mean {var_name} from {start_date} to {end_date}")

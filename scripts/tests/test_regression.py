@@ -2,9 +2,8 @@
 import numpy as np
 import pandas as pd
 import xarray as xr
-from numpy.testing import assert_allclose
-
 from linear_regression_OOP import linear_regression
+from numpy.testing import assert_allclose
 
 
 # Making tests for linear regression class functions

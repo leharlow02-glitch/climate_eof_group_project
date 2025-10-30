@@ -1,6 +1,6 @@
-import xarray as xr
 import numpy as np
 import pandas as pd
+import xarray as xr
 
 
 def make_sample_era5_tg():
@@ -11,6 +11,6 @@ def make_sample_era5_tg():
     ds = xr.Dataset(
         {"tg": (("time", "longitude", "latitude"), data)},
         coords={"time": times, "longitude": lons, "latitude": lats},
-        attrs={"description": "Synthetic ERA5-like temperature dataset"}
+        attrs={"description": "Synthetic ERA5-like temperature dataset"},
     )
     return ds

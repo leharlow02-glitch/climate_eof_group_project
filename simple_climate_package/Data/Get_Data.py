@@ -1,9 +1,7 @@
+import os
 
 import xarray as xr
-import os
-import sys
-from netCDF4 import Dataset
-import matplotlib.pyplot as plt
+
 
 def check_nc_file(file_path):
     if not os.path.exists(file_path):
@@ -11,7 +9,7 @@ def check_nc_file(file_path):
         return
     try:
         ds = xr.open_dataset(file_path)
-        print('\nThe data exists, go on with analysis :)')
+        print("\nThe data exists, go on with analysis :)")
         print(f"Opened: {file_path}")
         print("Dimensions:", ds.dims)
         print("Variables:", list(ds.data_vars))
@@ -19,16 +17,16 @@ def check_nc_file(file_path):
     except Exception as e:
         print(f"Error reading {file_path}: {e}")
 
-## read data for analysis:
+
+# read data for analysis:
 def read_data(data_path):
     ds = xr.open_dataset(data_path)
-    print('\nOverview:')
+    print("\nOverview:")
     print(ds)
-    print('\nVariables:')
-    print(ds.variables)     # List of variables
-    print('\nCoordinates:')
-    print(ds.coords)        # Coordinate variables
-
+    print("\nVariables:")
+    print(ds.variables)  # List of variables
+    print("\nCoordinates:")
+    print(ds.coords)  # Coordinate variables
 
     # Data = Dataset(data_path,mode='r')
     # lon = Data.variables['longitude'][:]
@@ -53,10 +51,16 @@ def read_data(data_path):
     # print(time[-1])
     # print(f'the time units are: {time_units}')
 
+
 # read the data and make sure it works:
-print('Example data for the UK can be found here on the github repository: /root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc' )
-data_path = input('Input the path to the data you want to analyse: ')
-# data_path = '/root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc'
+print(
+    "Example data for the UK can be found here on the github repository: "
+    "/root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc"
+)
+data_path = input("Input the path to the data "
+                  "you want to analyse: ")
+# data_path = '/root/climate_eof_group_project/Data/
+# Example_Data/e-obs_UK_ground_temp.nc'
 check_nc_file(data_path)
 read_data(data_path)
 # Original path: '/root/Example_data/tg_ens_mean_0.25deg_reg_v30.0e.nc'

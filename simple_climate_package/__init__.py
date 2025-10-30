@@ -3,7 +3,8 @@
 It contains functionality for downloading, analysing, and plotting
 temperature data over Europe
 """
+
 # Import version info
-from .version_info import VERSION_INT, VERSION  # noqa
+from .version_info import VERSION, VERSION_INT  # noqa
 
 # Import main classes
