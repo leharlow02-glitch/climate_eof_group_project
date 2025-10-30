@@ -3,8 +3,9 @@ from pathlib import Path
 import xarray as xr
 import pytest
 
-from simple_climate_package.extremes import TempExtremes           # absolute import - run pytest from repo root
-from simple_climate_package.tests.sample_data import make_sample_era5_tg
+from simple_climate_package.extremes import CalcExtremes
+# from simple_climate_package.loader import DataReader           # absolute import - run pytest from repo root
+from tests.sample_data import make_sample_era5_tg
 
 
 @pytest.fixture
@@ -17,7 +18,7 @@ def test_temp_extremes_with_tempfile(tmp_path: Path, sample_tg_dataset: xr.Datas
     sample_tg_dataset.to_netcdf(file_path)
 
     # Create the TempExtremes object using the temp file (same as real code)
-    te = TempExtremes(str(file_path), varname="tg")
+    te = CalcExtremes(str(file_path), varname="tg")
 
     # choose start/end that are guaranteed to exist in the sample dataset
     start = np.datetime_as_string(sample_tg_dataset.time.min().values, unit='D')

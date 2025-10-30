@@ -2,7 +2,7 @@ import xarray as xr
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
-from loader import DataReader
+from simple_climate_package.loader import DataReader
 
 class CalcExtremes:
     def __init__(self, file_path, varname='tg'):
