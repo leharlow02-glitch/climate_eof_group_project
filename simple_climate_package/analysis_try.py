@@ -1,5 +1,5 @@
-from mean import TempMean           # absolute import - run pytest from repo root
-from extremes import TempExtremes
+from mean import CalcMean           # absolute import - run pytest from repo root
+from extremes import CalcExtremes
 import xarray as xr
 import matplotlib.pyplot as plt
 import os
@@ -9,7 +9,7 @@ import pandas as pd
 print('Example data for the UK can be found here on the github repository: /root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc' )
 data_path = input('Input the path to the data you want to analyse: ')
 
-tm = TempMean(data_path)
+tm = CalcMean(data_path)
 '''print(tm.mean_between('1950-01-01', '1955-01-01'))'''
 tm.plot_mean_tot_time()
 tm.plot_monthly_climatology()
@@ -25,7 +25,7 @@ daily_amon = tm.daily_clim_Anom()
 print(daily_amon.shape)
 
 
-tx = TempExtremes(data_path)
+tx = CalcExtremes(data_path)
 tx.plot_max_between('1950-01-01', '1955-01-01')
 tx.plot_max_tot()
 tx.plot_min_between('1950-01-01', '1955-01-01')
