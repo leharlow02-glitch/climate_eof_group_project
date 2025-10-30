@@ -43,7 +43,7 @@ class TempExtremes:
 
         # plot this data on a map
         min_map = selected_data.min(dim='time')
-        qm = min_map.plot()          # xarray returns an Axes object
+        qm = min_map.plot(cmap='RdYlBu_r')          # xarray returns an Axes object
         ax = qm.axes
         ax.set_title(f"Minimum temperature values between {start} and {end}")
         ax.figure.savefig(save_as, bbox_inches='tight')
@@ -70,7 +70,7 @@ class TempExtremes:
 
         # plot this data on a map
         max_map = selected_data.max(dim='time')
-        qm = max_map.plot()
+        qm = max_map.plot(cmap='RdYlBu_r')
         ax = qm.axes
         ax.set_title(f"Maximum temperature values between {start} and {end}")
         ax.figure.savefig(save_as, bbox_inches='tight')
@@ -92,7 +92,7 @@ class TempExtremes:
 
         # plot this data on a map
         min_map = self.tg.min(dim='time')
-        qm = min_map.plot()
+        qm = min_map.plot(cmap='RdYlBu_r')
         ax = qm.axes
         ax.set_title("Overall minimum temperature values")
         ax.figure.savefig(save_as, bbox_inches='tight')
@@ -114,7 +114,7 @@ class TempExtremes:
 
         # plot this data on a map
         max_map = self.tg.max(dim='time')
-        qm = max_map.plot()
+        qm = max_map.plot(cmap='RdYlBu_r')
         ax = qm.axes
         ax.set_title("Overall maximum temperature values")
         ax.figure.savefig(save_as, bbox_inches='tight')
