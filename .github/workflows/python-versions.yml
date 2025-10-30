@@ -45,6 +45,11 @@ jobs:
         if [ -n "${CODECOV_TOKEN}" ]; then echo "Codecov token is set"; else echo "Codecov token is missing"; fi
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    
+    - name: Run coverage
+        run:|
+          pytest --cov-config=.coveragerc --cov=./climate_eof_group_project --cov-report=xml
+          cat coverage.xml
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5
