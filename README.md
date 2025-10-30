@@ -11,10 +11,9 @@ Statistical tests included in this package:
 
 # Table of Contents
 1. Installation
-2. Usage
-3. Features
-4. Contributions
-5. License
+2. Features
+3. Contributions
+4. License
 
 # 1. Installation
 ## Installing without a virtual environment
@@ -73,13 +72,13 @@ client = cdsapi.Client()
 client.retrieve(dataset, request).download()
 ```
 
-# 3. Features
+# 2. Features
 
 
 
-# 4. Authors & Contributions
+# 3. Authors & Contributions
 
 This package was created by [Hannah-Jane Wood](https://github.com/hannahw0od), [Lucy Harlow](https://github.com/leharlow02-glitch), and [Ofer Cohen](https://github.com/ofer-cohen)
 
-# 5. License
+# 4. License
 The simple_climate_package is licensed under the [MIT License](LICENSE) - see the LICENSE file for details
