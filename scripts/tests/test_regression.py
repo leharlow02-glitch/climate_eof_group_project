@@ -2,21 +2,22 @@
 import numpy as np
 import pandas as pd
 import xarray as xr
-import os
 from numpy.testing import assert_allclose
 import pytest
 from linear_regression_OOP import linear_regression   
 
+
 # Making tests for linear regression class functions
 def make_synthetic_daily_dataset(start='2000-01-01', end='2002-12-31', lat_vals=[0.0, 1.0], lon_vals=[0.0, 1.0]):
     """
-    Create a tiny synthetic daily Dataset with values = integer year (e.g. 2000,2001,...)
+    Create a tiny synthetic daily Dataset with values = integer year
     shape: (time, lat, lon). This produces an exact slope = 1.0 (per year).
     """
     times = pd.date_range(start=start, end=end, freq='D')
     years = times.year.values.astype(float)                  
     T = len(times)
-    ny = len(lat_vals); nx = len(lon_vals)
+    ny = len(lat_vals)
+    nx = len(lon_vals)
 
     # Create data with value equal to year across all grid points
     data = np.tile(years.reshape(T, 1, 1), (1, ny, nx))

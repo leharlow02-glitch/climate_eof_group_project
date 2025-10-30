@@ -1,39 +1,43 @@
-from scipy import stats
 import numpy as np
 from scipy.stats import t
 import matplotlib.pyplot as plt
 import xarray as xr
-import matplotlib.colors as mcolors
 from functools import wraps
 
 ###Writing linear regression calculation and plotting class###
 
 class linear_regression():
-    """ Load dataset, compute anomalies (optional), calculate 
+
+
+    """ 
+    Load dataset, compute anomalies (optional), calculate 
     linear regression for each point across lon-lat grid, and plot 
-    slope change per decade over a spatial map """
+    slope change per decade over a spatial map 
+    """
+
 
     #reading in data function
     def __init__(self, data_dir_path, varname=None):
         self.ds = xr.open_dataset(data_dir_path)
         if varname is None:
-            varname = list(self.ds.data_vars)[0]
+            varname = list(self.ds.data_vars)[0] #Takes the first variable in the 3D array e.g. ['tg'] if none specified
         self.varname = varname
         self.da = self.ds[self.varname]
 
         #variables names and creating empty fields for computing
         self.lat = 'lat' if 'lat' in self.da.coords else 'latitude'
-        self.lon= 'lon' if 'lon' in self.da.coords else 'longitude'
+        self.lon = 'lon' if 'lon' in self.da.coords else 'longitude'
         self.results = {}
 
     #resampling daily data to years
     def make_yearly(self, how='mean'):
-        self.annual = self.da.resample(time='1YS').reduce(getattr(np,how))
+        self.annual = self.da.resample(time='1YS').reduce(getattr(np, how))
         return self.annual
 
-
     def ignore_numpy_warnings(func):
-        """ Runs functioninside np.errstat(invalid='ignore', divide='ignore)"""
+        """ 
+        Runs function inside np.errstat(invalid='ignore', divide='ignore)
+        """
         @wraps(func)
         def wrapper(*args, **kwargs):
             with np.errstate(invalid='ignore', divide= 'ignore'):
@@ -42,9 +46,11 @@ class linear_regression():
     
     @ignore_numpy_warnings
     def grid_linear_regression(self, min_obs=3):
-        """ Function computes a linear regression for each grid point in
+
+
+        """
+        Function computes a linear regression for each grid point in
         dataset's longitude-latitude grid. 
-        
         It returns the following information:
         - slope per year (slope)
         - slope per decade (per_decade)
@@ -55,6 +61,8 @@ class linear_regression():
         - Root mean squared error (rmse)
         - intercept (intercept)
         """
+
+
         if self.annual is None:
             self.make_yearly()
         
@@ -78,7 +86,7 @@ class linear_regression():
         Y = y.reshape(T, N_grid)
         
         #Reshape X so broadcasting occurs across the array correctly
-        X = years.reshape(T,1)
+        X = years.reshape(T, 1)
         X_mat = np.broadcast_to(X, (T, N_grid))
 
         #Validate obs using mask and counts to mask NaNs
@@ -120,19 +128,20 @@ class linear_regression():
         per_decade = slope * 10.0
 
         #Comparing model_predicted values and residuals
-        """ Measures how well the linear regression fits each lon-lat
-        grid point """
+            #Measures how well the linear regression fits each lon-lat
+            #grid point
         Yhat = np.zeros_like(Yf)
         if np.any(ok_pix):
             idx_ok = np.where(ok_pix)[0] #compute for ok grid points
-            Yhat[:,idx_ok]= (slope[idx_ok].reshape(1,-1)* X) +intercept[idx_ok].reshape(1,-1) #broadcast to 2D array shape
+            #broadcast to 2D array shape
+            Yhat[:,idx_ok]= (slope[idx_ok].reshape(1,-1)* X) + intercept[idx_ok].reshape(1,-1) 
             Yhat = np.where(valid, Yhat, 0.0) #mask out invalid times
         #Calculating residuals
         resid = Yf - Yhat
-        SSR = np.sum(resid * resid, axis=0) #sum of squared residuals
+        SSR = np.sum(resid * resid, axis=0) #Sum of squared residuals
 
         #Calculating mean squared error
-        df = n_obs - 2.0 #degrees of freedom
+        df = n_obs - 2.0 #Degrees of freedom
         mse = SSR/df
         se_slope = np.sqrt(mse/Sxx)
 
@@ -153,15 +162,15 @@ class linear_regression():
             return a.reshape(ny, nx)
         
         ds_out = xr.Dataset({
-            'slope': ((self.lat, self.lon), to_grid(slope)),
-            'intercept': ((self.lat, self.lon),to_grid(intercept)),
-            't_stat':((self.lat, self.lon), to_grid(t_stat)),
-            'p_value': ((self.lat, self.lon),to_grid(p_value)),
-            'r2': ((self.lat, self.lon),to_grid(r2)),
-            'rmse': ((self.lat, self.lon),to_grid(rmse)),
-            'n_obs': ((self.lat, self.lon),to_grid(n_obs)),
-            'per_decade': ((self.lat, self.lon),to_grid(per_decade)),
-            'total_change': ((self.lat, self.lon),to_grid(total_change)),
+            'slope': ((self.lat, self.lon), to_grid(slope)), 
+            'intercept': ((self.lat, self.lon), to_grid(intercept)), 
+            't_stat':((self.lat, self.lon), to_grid(t_stat)), 
+            'p_value': ((self.lat, self.lon), to_grid(p_value)), 
+            'r2': ((self.lat, self.lon), to_grid(r2)),
+            'rmse': ((self.lat, self.lon), to_grid(rmse)), 
+            'n_obs': ((self.lat, self.lon), to_grid(n_obs)), 
+            'per_decade': ((self.lat, self.lon), to_grid(per_decade)), 
+            'total_change': ((self.lat, self.lon), to_grid(total_change)), 
         }, coords = {self.lat: lat_vals,
                      self.lon: lon_vals})
         
