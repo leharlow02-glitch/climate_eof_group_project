@@ -1,12 +1,11 @@
 from functools import wraps
-
+import os
 import matplotlib.pyplot as plt
 import numpy as np
 import xarray as xr
 from scipy.stats import t
 
 ###Writing linear regression calculation and plotting class###
-
 
 class linear_regression:
     """
@@ -184,7 +183,7 @@ class linear_regression:
         self.results = ds_out
         return self.results
 
-    def quick_plot_signif_stippling(self, key="per_decade"):
+    def quick_plot_signif_stippling(self, key="per_decade", out_dir="/root/climate_eof_group_project/plots/linear_regression/"):
         # read in data
         field = self.results[key]
         p_val = self.results["p_value"]
@@ -223,14 +222,25 @@ class linear_regression:
         cbar.set_label("Change in slope per decade", rotation=0, fontsize=8)
         tick_min, tick_max = np.nanmin(field), np.nanmax(field)
         ticks = np.linspace(
-            tick_min, tick_max, 6
+            vmin, vmax, 6
         )  # creates 6 evenly spaced ticks
         cbar.set_ticks(ticks)
         cbar.ax.set_xticklabels(
-            ["t:.2f" for t in ticks]
+            [f"{t:.2f}" for t in ticks]
         )  # formats to 2 decimal places
 
         # labelling axes
         ax.set_xlabel("Longitude", labelpad=15, fontsize=10)
         ax.set_ylabel("Latitude", labelpad=15, fontsize=10)
+
+        #Save plot
+        os.makedirs(out_dir, exist_ok=True)
+        plt.title(f"Linear regression of {self.da}")
+        plt.savefig(out_dir + f' linear regression of {self.da}', dpi=150, bbox_inches="tight")
+        fig.tight_layout()
+
+        #show and close plot
         plt.show()
+        plt.close()
+        print(f'sved fig')
+
