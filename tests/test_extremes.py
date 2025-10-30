@@ -35,8 +35,9 @@ def test_temp_extremes_with_tempfile(tmp_path: Path, sample_tg_dataset: xr.Datas
 
     # assertions: methods return floats and are in temp range 270-285
     for val in (min_val, max_val, min_tot, max_tot):
-        assert isinstance(val, float)
-        assert 270 < val < 285
+        assert isinstance(val, xr.DataArray)
+        assert val.dtype == float or np.issubdtype(val.dtype, np.floating)
+        assert ((val > 273.15) & (val < 283.15)).all()    
     
     # assertions: methods return xarray with float values in temp range 270-285
     for val in (yearly_min,yearly_max, monthly_min, monthly_max):
