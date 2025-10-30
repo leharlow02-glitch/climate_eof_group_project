@@ -17,10 +17,18 @@ Statistical tests included in this package:
 5. License
 
 # 1. Installation
+## Installing without a virtual environment
+
+For general use of this package without a virtual environment, please import using pip install.
+
+```bash 
+pip install simple_climate_package
+```
+
 
 ## Installation using a virtual environment
 
-To ensure the use of the same packages and dependencies, please follow these steps when setting up your local environment.
+To ensure the use of the same packages and dependencies, please follow these steps when setting up your local environment. This method is preferred for developers.
 
 These commands are for bash. 
 
@@ -39,14 +47,6 @@ source env/bin/activate
 ### Step 3: Install dependencies from virtual_environment_requirements.txt
 ```bash 
 pip install -r virtual_environment_requirements.txt
-```
-
-## Installing without a virtual environment
-
-For general use of this package without a virtual environment, please import using pip install.
-
-```bash 
-pip install simple_climate_package
 ```
 
 ## Installing data
