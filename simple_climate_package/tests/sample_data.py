@@ -14,3 +14,7 @@ def make_sample_era5_tg():
         attrs={"description": "Synthetic ERA5-like temperature dataset"}
     )
     return ds
+
+# sample_data = make_sample_era5_tg();
+# print(sample_data.data_vars)
+
