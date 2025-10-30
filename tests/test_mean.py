@@ -3,8 +3,9 @@ from pathlib import Path
 import xarray as xr
 import pytest
 
-from simple_climate_package.mean import TempMean           # absolute import - run pytest from repo root
-from simple_climate_package.tests.sample_data import make_sample_era5_tg
+from simple_climate_package.mean import CalcMean           # absolute import - run pytest from repo root
+# from simple_climate_package.loader import DataReader           # absolute import - run pytest from repo root
+from tests.sample_data import make_sample_era5_tg
 
 
 @pytest.fixture
@@ -20,7 +21,7 @@ def test_mean_anom(tmp_path: Path, sample_tg_dataset: xr.Dataset):
     print(sample_tg_dataset)
 
     # Create the TempExtremes object using the temp file (same as real code)
-    te = TempMean(str(file_path), varname="tg")
+    te = CalcMean(str(file_path), varname="tg")
 
     # choose start/end that are guaranteed to exist in the sample dataset
     start = np.datetime_as_string(sample_tg_dataset.time.min().values, unit='D')

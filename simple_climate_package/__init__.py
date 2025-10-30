@@ -8,7 +8,8 @@ from .version_info import VERSION_INT, VERSION  # noqa
 
 # Import main classes
 # simple_climate_package/__init__.py
-from .mean import TempMean
-from .extremes import TempExtremes
-__all__ = ["TempMean", "TempExtremes"]
+from .mean import CalcMean
+from .extremes import CalcExtremes
+from .loader import DataReader
+__all__ = ["CalcMean", "CalcExtremes",'DataReader']
 __version__ = "0.1.0"   # or import from _version.py
