@@ -39,6 +39,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip setuptools wheel
         pip install -r virtual_environment_requirements.txt
+        pip install .[dev]
         
     - name: Debug if token exists
       run: |
@@ -48,7 +49,8 @@ jobs:
     
     - name: Run coverage
         run:|
-          pytest pytest --cov-config=.coveragerc --cov=simple_climate_package --cov-report=xml:coverage.xml || true
+          pytest pytest --cov-config=.coveragerc --cov=./simple_climate_package --cov-report=xml:coverage.xml 
+          cat coverage.xml
     
 
     - name: Upload coverage reports to Codecov
