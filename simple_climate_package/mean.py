@@ -53,8 +53,8 @@ class TempMean:
         mean_map = selected_data.mean(dim='time')
         qm = mean_map.plot(cmap='RdYlBu_r')          # xarray returns an Axes object
         ax = qm.axes
-        ax.set_title(f"Mean temperature values between {start} and {end}")
-        ax.figure.savefig(save_path + f'/Mean_temperature_values_between_{start}_and_{end}.png', bbox_inches='tight')
+        ax.set_title(f"Mean {self.tg.name} values between {start} and {end}")
+        ax.figure.savefig(save_path + f'/Mean_{self.tg.name}_values_between_{start}_and_{end}.png', bbox_inches='tight')
         plt.close(ax.figure)
 
         return mean_map
@@ -74,8 +74,8 @@ class TempMean:
         mean_map = self.tg.mean(dim='time')
         qm = mean_map.plot(cmap='RdYlBu_r')
         ax = qm.axes
-        ax.set_title("Overall mean temperature values")
-        ax.figure.savefig(save_path + f'mean_time_tot_temperature.png', bbox_inches='tight')
+        ax.set_title(f"Overall mean {self.tg.name} values")
+        ax.figure.savefig(save_path + f'mean_time_tot_{self.tg.name}.png', bbox_inches='tight')
         plt.close(ax.figure)
 
         return mean_map
