@@ -24,7 +24,6 @@ class linear_regression():
         #variables names and creating empty fields for computing
         self.lat = 'lat' if 'lat' in self.da.coords else 'latitude'
         self.lon= 'lon' if 'lon' in self.da.coords else 'longitude'
-        self.anoms = None 
         self.results = {}
 
     #resampling daily data to years
