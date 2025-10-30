@@ -9,8 +9,12 @@ class CalcExtremes:
         dr = DataReader(file_path)
         ds = dr.read()
 
+        if varname is None:
+            varname = list(self.ds.data_vars)[0]
+
         if varname not in ds:
             raise KeyError(f'{varname} not in dataset')
+        
         self.tg = ds[varname]
 
         # check the file exists
