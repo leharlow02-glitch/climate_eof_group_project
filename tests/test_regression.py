@@ -4,7 +4,7 @@ import pandas as pd
 import xarray as xr
 from numpy.testing import assert_allclose
 
-from simple_climate_package.linear_regression_OOP import linear_regression
+from simple_climate_package.linear_regression import linear_regression
 
 
 # Making tests for linear regression class functions
