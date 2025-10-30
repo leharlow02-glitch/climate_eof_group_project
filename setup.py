@@ -1,13 +1,9 @@
-#
-# pkmodel setuptools script
-#
 from setuptools import setup, find_packages
+import io
 
 
 def get_version():
-    """
-    Get version number from the simple_climate_package module.
-    """
+    # Get version number from the simple_climate_package module.
     import os
     import sys
 
@@ -18,12 +14,25 @@ def get_version():
 
 
 def get_readme():
-    """
-    Load README.md text for use as description.
-    """
+    # Load README.md text for use as description.
     with open('README.md') as f:
         return f.read()
 
+def parse_requirements(filename):
+    # Read a requirements file and return a list suitable for install_requires.
+    # Ignores comments, editable installs (-e) and vcs/git lines.
+
+    reqs = []
+    with io.open(filename, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            # ignore editable installs and VCS links which aren't valid in install_requires
+            if line.startswith("-e") or line.startswith("git+") or "://" in line:
+                continue
+            reqs.append(line)
+    return reqs
 
 # Go!
 setup(
@@ -32,17 +41,17 @@ setup(
 
     # Version
     version=get_version(),
-    description='An example Python project.',
+    description='Simple statistical analysis for E-OBS datasets',
     long_description=get_readme(),
     license='MIT license',
     author='Hannah-Jane Wood, Lucy Harlow, Ofer Cohen',
     author_email='lucy.harlow@reuben.ox.ac.uk',
-    maintainer='Martin Robinson',
-    maintainer_email='martin.robinson@cs.ox.ac.uk',
     url='https://github.com/leharlow02-glitch/climate_eof_group_project',
     # Packages to include
     packages=find_packages(
         include=('simple_climate_package', 'simple_climate_package.*')),
+    # Runtime dependencies (read from requirements.txt)
+    install_requires=parse_requirements("requirements.txt"),
     # List of dependencies
     extras_require={
         'docs': [
@@ -58,5 +67,5 @@ setup(
             'build'
         ],
     },
-    python_requires='>=3.8',
+    python_requires='>=3.11',
 )
