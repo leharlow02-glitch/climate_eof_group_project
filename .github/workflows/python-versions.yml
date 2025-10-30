@@ -46,12 +46,11 @@ jobs:
         if [ -n "${CODECOV_TOKEN}" ]; then echo "Codecov token is set"; else echo "Codecov token is missing"; fi
       env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-    
+          
     - name: Run coverage
       run: |
-        pytest --cov-config=.coveragerc --cov=simple_climate_package --cov-report=xml:coverage.xml || true
-        echo "=== coverage.xml preview ==="
-        if [ -f coverage.xml ]; then head -n 40 coverage.xml; else echo "coverage.xml not found"; fi
+        pytest --cov=simple_climate_package --cov-report=xml:coverage.xml || true
+        head -n 20 coverage.xml || true
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5
