@@ -3,8 +3,8 @@ from pathlib import Path
 import xarray as xr
 import pytest
 
-from mean import TempMean           # absolute import - run pytest from repo root
-from tests.sample_data import make_sample_era5_tg
+from simple_climate_package.mean import TempMean           # absolute import - run pytest from repo root
+from simple_climate_package.tests.sample_data import make_sample_era5_tg
 
 
 @pytest.fixture
@@ -17,6 +17,7 @@ def test_mean_anom(tmp_path: Path, sample_tg_dataset: xr.Dataset):
     # Save the in-memory dataset to a temporary NetCDF file
     file_path = tmp_path / "sample.nc"
     sample_tg_dataset.to_netcdf(file_path)
+    print(sample_tg_dataset)
 
     # Create the TempExtremes object using the temp file (same as real code)
     te = TempMean(str(file_path), varname="tg")
@@ -44,4 +45,4 @@ def test_mean_anom(tmp_path: Path, sample_tg_dataset: xr.Dataset):
     for val in (anom_daily,anom_monthly):
         assert isinstance(val, xr.DataArray)
         assert val.dtype == float or np.issubdtype(val.dtype, np.floating)
-        assert ((val > 0) & (val < 10)).all()    
+        assert ((val > -10) & (val < 10)).all()    

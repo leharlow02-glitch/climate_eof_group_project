@@ -3,8 +3,8 @@ from pathlib import Path
 import xarray as xr
 import pytest
 
-from extremes import TempExtremes           # absolute import - run pytest from repo root
-from tests.sample_data import make_sample_era5_tg
+from simple_climate_package.extremes import TempExtremes           # absolute import - run pytest from repo root
+from simple_climate_package.tests.sample_data import make_sample_era5_tg
 
 
 @pytest.fixture

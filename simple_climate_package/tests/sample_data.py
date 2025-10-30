@@ -15,6 +15,6 @@ def make_sample_era5_tg():
     )
     return ds
 
-sample_data = make_sample_era5_tg();
-print(sample_data.data_vars)
+# sample_data = make_sample_era5_tg();
+# print(sample_data.data_vars)
 

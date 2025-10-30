@@ -124,10 +124,10 @@ class TempExtremes:
 
 
     def monthly_max(self):
-        return self.tg.resample(time="1M").max()
+        return self.tg.resample(time="1ME").max()
 
     def monthly_min(self):
-        return self.tg.resample(time="1M").min()
+        return self.tg.resample(time="1ME").min()
 
     def yearly_max(self):
         return self.tg.resample(time="1YE").max()
@@ -136,7 +136,7 @@ class TempExtremes:
         return self.tg.resample(time="1YE").min()
 
 # run from root of package
-temp = TempExtremes('Data/Example_Data/e-obs_UK_ground_temp.nc')
+# temp = TempExtremes('Data/Example_Data/e-obs_UK_ground_temp.nc')
 
 '''print(temp.min_between('1950-01-01', '1955-01-01'))
 print(temp.max_between('1950-01-01', '1955-01-01'))
