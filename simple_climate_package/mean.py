@@ -2,9 +2,36 @@ import xarray as xr
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
+from loader import DataReader
 
+class CalcMean:
+    def __init__(self, file_path, varname='tg'):
+        dr = DataReader(file_path)
+        ds = dr.read()
 
-class TempMean:
+        if varname not in ds:
+            raise KeyError(f'{varname} not in dataset')
+        self.tg = ds[varname]
+
+        # check the file exists
+        # if not os.path.exists(filepath):
+        #     FileNotFoundError(f"File not found: {filepath}")
+
+        # try to open the dataset
+        # try:
+        #     self.ds = xr.open_dataset(filepath, decode_times=True)
+        #     print('\nThe data exists, go on with analysis :)')
+        #     print(f"Opened: {filepath}")
+        #     print("Dimensions:", self.ds.dims)
+        #     print("Variables:", list(self.ds.data_vars))
+
+        # # store the temperature variable
+        #     self.tg = self.ds[varname]
+        #     # print(self.tg.time)
+
+        # except Exception as e:
+        #     raise RuntimeError(f"Error reading {filepath}: {e}")
+        
 
     def __init__(self, filepath, varname='tg'):
 

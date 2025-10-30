@@ -2,27 +2,34 @@ import xarray as xr
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
+from loader import DataReader
 
-class TempExtremes:
-    def __init__(self, filepath, varname='tg'):
+class CalcExtremes:
+    def __init__(self, file_path, varname='tg'):
+        dr = DataReader(file_path)
+        ds = dr.read()
+
+        if varname not in ds:
+            raise KeyError(f'{varname} not in dataset')
+        self.tg = ds[varname]
 
         # check the file exists
-        if not os.path.exists(filepath):
-            FileNotFoundError(f"File not found: {filepath}")
+        # if not os.path.exists(filepath):
+        #     FileNotFoundError(f"File not found: {filepath}")
 
-        # try to open the dataset
-        try:
-            self.ds = xr.open_dataset(filepath, decode_times=True)
-            print('\nThe data exists, go on with analysis :)')
-            print(f"Opened: {filepath}")
-            print("Dimensions:", self.ds.dims)
-            print("Variables:", list(self.ds.data_vars))
+        # # try to open the dataset
+        # try:
+        #     self.ds = xr.open_dataset(filepath, decode_times=True)
+        #     print('\nThe data exists, go on with analysis :)')
+        #     print(f"Opened: {filepath}")
+        #     print("Dimensions:", self.ds.dims)
+        #     print("Variables:", list(self.ds.data_vars))
 
-        # store the temperature variable
-            self.tg = self.ds[varname]
+        # # store the temperature variable
+        #     self.tg = self.ds[varname]
 
-        except Exception as e:
-            raise RuntimeError(f"Error reading {filepath}: {e}")
+        # except Exception as e:
+        #     raise RuntimeError(f"Error reading {filepath}: {e}")
 
     def min_between(self, start, end):
         # Identify the minimum temperature values between two dates and plot
