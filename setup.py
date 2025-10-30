@@ -3,14 +3,19 @@ import io
 
 
 def get_version():
-    # Get version number from the simple_climate_package module.
-    import os
-    import sys
+    # Read VERSION from simple_climate_package/version_info.py without importing package
+    import re
+    from pathlib import Path
 
-    sys.path.append(os.path.abspath('simple_climate_package'))
-    from simple_climate_package.version_info import VERSION as version
-    sys.path.pop()
-    return version
+    init_path = Path(__file__).parent / "simple_climate_package" / "version_info.py"
+    if not init_path.exists():
+        raise RuntimeError(f"version_info.py not found at {init_path}")
+    text = init_path.read_text(encoding="utf8")
+    m = re.search(r"^VERSION\s*=\s*['\"]([^'\"]+)['\"]", text, re.M)
+    if m:
+        return m.group(1)
+    raise RuntimeError("Unable to find VERSION in simple_climate_package/version_info.py")
+
 
 
 def get_readme():
