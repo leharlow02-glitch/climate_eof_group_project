@@ -39,7 +39,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip setuptools wheel
         pip install -r virtual_environment_requirements.txt
-        pip install .[dev]
+        pip install -e '.[dev]'
         
     - name: Debug if token exists
       run: |
