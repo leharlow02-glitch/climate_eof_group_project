@@ -24,22 +24,23 @@ def test_temp_extremes_with_tempfile(tmp_path: Path, sample_tg_dataset: xr.Datas
     end   = np.datetime_as_string(sample_tg_dataset.time.max().values, unit='D')
 
     # call methods, pass a temp filename for the plots so they don't clutter repo
-    min_val = te.min_between(start, end, save_as=str(tmp_path / "min.png"))
-    max_val = te.max_between(start, end, save_as=str(tmp_path / "max.png"))
-    min_tot = te.min_tot(save_as=str(tmp_path / "min_tot.png"))
-    max_tot = te.max_tot(save_as=str(tmp_path / "max_tot.png"))
+    min_val = te.min_between(start, end)
+    max_val = te.max_between(start, end)
+    min_tot = te.min_tot()
+    max_tot = te.max_tot()
     monthly_min = te.monthly_min()
     monthly_max = te.monthly_max()
     yearly_min = te.yearly_min()
     yearly_max = te.yearly_max()
 
     # assertions: methods return floats and are in temp range 270-285
-    for val in (min_val, max_val, min_tot, max_tot):
-        assert isinstance(val, float)
-        assert 270 < val < 285
-    
-    # assertions: methods return xarray with float values in temp range 270-285
-    for val in (yearly_min,yearly_max):
+    for val in (min_val, max_val, min_tot, max_tot, yearly_min, yearly_max, monthly_min, monthly_max):
         assert isinstance(val, xr.DataArray)
         assert val.dtype == float or np.issubdtype(val.dtype, np.floating)
         assert ((val > 270) & (val < 285)).all()
+
+    # assertions: methods return xarray with float values in temp range 270-285
+    # for val in (yearly_min,yearly_max):
+    #     assert isinstance(val, xr.DataArray)
+    #     assert val.dtype == float or np.issubdtype(val.dtype, np.floating)
+    #     assert ((val > 270) & (val < 285)).all()

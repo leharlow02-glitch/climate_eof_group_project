@@ -29,6 +29,17 @@ class TempMean:
         
         # return self
 
+    def mean_between(self, start, end):
+        # Identify and returns the mean temperature values between two dates and plots it to a map.
+
+        # select data between two dates
+        selected_data = self.tg.sel(time=slice(start, end))
+
+        # plot this data on a map
+        mean_map = selected_data.mean(dim='time')
+
+        return mean_map
+
     def plot_mean_between(self, start, end, save_path='/root/climate_eof_group_project/plots'):
         # Identify and returns the mean temperature values between two dates and plots it to a map.
 
@@ -47,7 +58,12 @@ class TempMean:
         plt.close(ax.figure)
 
         return mean_map
-    
+
+    def mean_tot_time(self):
+        # Identify the mean temperature over the whole dataset
+
+        return self.tg.mean(dim='time')
+        
     def plot_mean_tot_time(self, save_path='/root/climate_eof_group_project/plots/'):
         # Identify the mean temperature over the whole dataset and plot
 
@@ -64,7 +80,7 @@ class TempMean:
 
         return mean_map
 
-    def monthly_mean(self, month):
+    def monthly_mean(self):
         return self.tg.resample(time="1ME").mean()
 
     def yearly_mean(self):
@@ -199,26 +215,6 @@ class TempMean:
         anom.attrs["description"] = "Daily anomalies (daily - dayofyear climatology)"
         return anom
 
-    # def daily_clim(self):
-    #     return self.tg.groupby('time.dayofyear').mean(dim='time')
-
-    # def daily_clim_Anom(self):
-    #     """
-    #     Compute monthly anomalies:
-    #     monthly mean - long-term monthly climatology.
-    #     Returns an xarray.DataArray with one value per month.
-    #     """
-    #     # 1. Convert daily data → monthly means
-    #     # daily = self.tg.resample(time="1D").mean()
-
-    #     # 2. Compute long-term monthly climatology
-    #     clim = self.groupby("time.dayofyear").mean(dim="time")
-
-    #     # 3. Subtract climatology from each month
-    #     anom = self.groupby("time.dayofyear") - clim
-
-    #     anom.attrs["description"] = "Daily mean anomalies"
-    #     return anom
 
     def plot_monthly_climatology(self,out_dir="/root/climate_eof_group_project/plots/monthly_clim/"):
         
@@ -271,17 +267,16 @@ data_path = input('Input the path to the data you want to analyse: ')
 
 tm = TempMean(data_path)
 '''print(tm.mean_between('1950-01-01', '1955-01-01'))'''
-# tm.plot_mean_tot_time()
-# tm.plot_monthly_climatology()
-# tm.plot_mean_between('1950-01-01', '1955-01-01')
-# tm.plot_yearly_mean()
+tm.plot_mean_tot_time()
+tm.plot_monthly_climatology()
+tm.plot_mean_between('1950-01-01', '1955-01-01')
+tm.plot_yearly_mean()
 month_clim = tm.monthly_clim()
 print(month_clim.shape)
 clim_amon = tm.monthly_clim_Anom()
 print(clim_amon.shape)
 day_clim = tm.daily_clim()
 print(day_clim.shape)
-daily_amon = tm.monthly_clim_Anom()
+daily_amon = tm.daily_clim_Anom()
 print(daily_amon.shape)
 
-# print(tm.monthly_mean)

@@ -24,7 +24,18 @@ class TempExtremes:
         except Exception as e:
             raise RuntimeError(f"Error reading {filepath}: {e}")
 
-    def min_between(self, start, end, save_as='min.png'):
+    def min_between(self, start, end):
+        # Identify the minimum temperature values between two dates and plot
+
+        # select data between two dates
+        selected_data = self.tg.sel(time=slice(start, end))
+
+        # plot this data on a map
+        min_map = selected_data.min(dim='time')
+        
+        return min_map
+
+    def plot_min_between(self, start, end, save_as='min.png'):
         # Identify the minimum temperature values between two dates and plot
 
         # select data between two dates
@@ -38,9 +49,20 @@ class TempExtremes:
         ax.figure.savefig(save_as, bbox_inches='tight')
         plt.close(ax.figure)
 
-        return float(selected_data.min())
+        return min_map
 
-    def max_between(self, start, end, save_as='max.png'):
+    def max_between(self, start, end):
+        # Identify the maximum temperature values between two dates and plot
+
+        # select data between two dates
+        selected_data = self.tg.sel(time=slice(start, end))
+
+        # plot this data on a map
+        max_map = selected_data.max(dim='time')
+
+        return max_map
+    
+    def plot_max_between(self, start, end, save_as='max.png'):
         # Identify the maximum temperature values between two dates and plot
 
         # select data between two dates
@@ -54,9 +76,18 @@ class TempExtremes:
         ax.figure.savefig(save_as, bbox_inches='tight')
         plt.close(ax.figure)
 
-        return float(selected_data.max())
+        return max_map
 
-    def min_tot(self, save_as='min_tot.png'):
+
+    def min_tot(self):
+        # Identify the minimum temperature over the whole dataset and plot
+
+        # plot this data on a map
+        min_map = self.tg.min(dim='time')
+        
+        return min_map
+
+    def plot_min_tot(self, save_as='min_tot.png'):
         # Identify the minimum temperature over the whole dataset and plot
 
         # plot this data on a map
@@ -67,9 +98,18 @@ class TempExtremes:
         ax.figure.savefig(save_as, bbox_inches='tight')
         plt.close(ax.figure)
 
-        return float(self.tg.min())
+        return min_map
 
-    def max_tot(self, save_as='max_tot.png'):
+
+    def max_tot(self):
+        # Identify the maximum temperature over the whole dataset and plot
+
+        # plot this data on a map
+        max_map = self.tg.max(dim='time')
+        
+        return max_map
+
+    def plot_max_tot(self, save_as='max_tot.png'):
         # Identify the maximum temperature over the whole dataset and plot
 
         # plot this data on a map
@@ -80,7 +120,8 @@ class TempExtremes:
         ax.figure.savefig(save_as, bbox_inches='tight')
         plt.close(ax.figure)
 
-        return float(self.tg.max())
+        return max_map
+
 
     def monthly_max(self):
         return self.tg.resample(time="1M").max()
