@@ -12,5 +12,5 @@ from .mean import CalcMean
 from .extremes import CalcExtremes
 from .loader import DataReader
 from .linear_regression import LinReg
-__all__ = ["CalcMean", "CalcExtremes",'DataReader']
-__version__ = "0.1.0"   # or import from _version.py
+__all__ = ["CalcMean", "CalcExtremes",'DataReader','LinReg']
+__version__ = "1.0.0"   # or import from _version.py
