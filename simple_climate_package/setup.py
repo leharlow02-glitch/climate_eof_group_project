@@ -51,12 +51,6 @@ def get_version():
     return str(version)
 
 
-
-def get_readme():
-    # Load README.md text for use as description.
-    with open('README.md') as f:
-        return f.read()
-
 def parse_requirements(filename):
     # Read a requirements file and return a list suitable for install_requires.
     # Ignores comments, editable installs (-e) and vcs/git lines.
@@ -81,8 +75,6 @@ setup(
     # Version
     version="1.0.0",
     description='Simple statistical analysis for E-OBS datasets',
-    long_description=get_readme(),
-    long_description_content_type="text/markdown",
     license='MIT license',
     author='Hannah-Jane Wood, Lucy Harlow, Ofer Cohen',
     author_email='lucy.harlow@reuben.ox.ac.uk',
