@@ -262,12 +262,3 @@ class CalcExtremes:
             fig.tight_layout()
             plt.close()
             print(f'sved fig for {year_label}')
-
-# run from root of package
-# temp = TempExtremes('Data/Example_Data/e-obs_UK_ground_temp.nc')
-
-'''print(temp.min_between('1950-01-01', '1955-01-01'))
-print(temp.max_between('1950-01-01', '1955-01-01'))
-print(temp.min_tot())
-print(temp.max_tot())
-print(type(temp.calc_monthly_max()))'''
