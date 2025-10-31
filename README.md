@@ -134,7 +134,7 @@ month_clim = tm.monthly_clim()
 tm.plot_monthly_climatology()
 ```
 
-![Screenshot](https://github.com/leharlow02-glitch/climate_eof_group_project/blob/hannah/plots/monthly_clim/mean%20tg%20for%201.png)
+![Screenshot](./plots/monthly_clim/mean_tg_for_Apr.png)
 
 Instead of monthly trends, daily climatology (daily trends over the entire timeseries) can be calculating by calling **daily_clim**.
 There is not a plotting function for daily climatology due to the large volume of days in the dataset.
@@ -164,7 +164,7 @@ Input the path to your data file into CalcExtremes and label this as 'tx'.
 from simple_climate_package.mean import CalcExtremes
 
 
-tx = CalcMean(data_path)
+tx = CalcExtremes(data_path)
 ```
 To obtain the dataset of the minimum temperature data for each grid pixel over the entire timeseries, call **min_tot()**.
 To obtain the dataset of the maximum temperature data for each grid pixel over the entire timeseries, call **max_tot()**.
@@ -183,9 +183,9 @@ tx.plot_max_tot()
 
 This method saves a plot to a filepath specified in the arguement of the method.
 
-![Screenshot](https://github.com/leharlow02-glitch/climate_eof_group_project/blob/hannah/plots/yearly_min/min%20tg%20for%201950.png)
+![Screenshot](./plots/yearly_max/max_tg_for_1950.png)
 
-Note that **min_tot_time()** and **max_tot_time()** does not need to be called to use **plot_min_tot()** and **plot_max_tot()** respectively.
+Note that **min_tot_time()** and **max_tot_time()** do not need to be called to use **plot_min_tot()** and **plot_max_tot()** respectively.
 
 Instead of getting the total minimum/maximum value, you can specify the dates between which you want to calculate it.
 
@@ -207,6 +207,36 @@ tx.plot_yearly_max()
 ```
 
 ## Linear Regression
+To conduct analysis using linear regression data, import the class LinReg from **simple_climate_package**.
+Input the path to your data file into LinReg and label this as 'tl'.
+'tl' is your temperature instance and what will be used to conduct your analysis.
+
+```python
+from simple_climate_package.linear_regression import LinReg
+
+
+tl = LinReg(data_path)
+```
+
+Calling **grid_linear_regression** calculates the linear regression for each grid pixel in the entire dataset.
+
+```python
+lin_reg = tl.grid_linear_regression()
+```
+
+Note that the dataset is resampled from daily to yearly means for efficiency.
+This method takes yearly mean as imports and returns arrays of variables.
+
+Variables returned: slope, intercept, t_stat, p_value, r2, rmse, n_obs, per_decade, total_change
+
+These variables can be used for further analysis.
+Calling **quick_plot_signif_stippling()** plots the temperature's change per decade
+
+```python
+tl.quick_plot_signif_stippling()
+```
+
+![Screenshot](./plots/linear_regression_of_tg.png)
 
 # 3. Authors & Contributions
 

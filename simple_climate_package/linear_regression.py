@@ -270,7 +270,7 @@ class LinReg:
 
         #Save plot
         plt.title(f"Linear regression of {self.da.name}")
-        plt.savefig(save_path + f'/linear regression of {self.da.name}.png', bbox_inches="tight")
+        plt.savefig(save_path + f'/linear_regression_of_{self.da.name}.png', bbox_inches="tight")
         fig.tight_layout()
 
         #show and close plot
