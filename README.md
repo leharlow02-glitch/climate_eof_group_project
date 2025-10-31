@@ -73,6 +73,50 @@ client.retrieve(dataset, request).download()
 ```
 
 # 2. Features
+An example analysis script using **simple_climate_package** is listed in the github repository.
+Start by specifying the path to you data file.
+The data path is an input to many of our methods, so is useful to specify at the beginning of your analysis.
+
+```python
+data_path = input('Input the path to the data you want to analyse: ')
+```
+
+## Calculating the mean
+To conduct analysis using mean data, import the class CalcMean from **simple_climate_package**.
+Input the path to your data file into CalcMean and label this as 'tm'.
+'tm' is your temperature instance and what will be used to conduct your analysis.
+
+```python
+from simple_climate_package.mean import CalcMean
+
+
+tm = CalcMean(data_path)
+```
+
+A variety of methods can be called to create datasets and plots of monthly or yearly mean temperature data.
+
+A visualisation of the mean temperature data over the entire timeseries can be called using **plot_mean_tot_time()**.
+
+```python
+tm.plot_mean_tot_time()
+```
+
+This method saves a plot to a filepath specified in the arguement of the method.
+
+![Screenshot](./plots/mean_time_tot_tg.png)
+
+tm.plot_monthly_climatology()
+tm.plot_mean_between('1950-01-01', '1955-01-01')
+tm.plot_yearly_mean()
+
+month_clim = tm.monthly_clim()
+print(month_clim.shape)
+clim_amon = tm.monthly_clim_Anom()
+print(clim_amon.shape)
+day_clim = tm.daily_clim()
+print(day_clim.shape)
+daily_amon = tm.daily_clim_Anom()
+print(daily_amon.shape)
 
 
 
