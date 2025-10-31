@@ -37,6 +37,7 @@ class LinReg:
         self.lat = "lat" if "lat" in self.da.coords else "latitude"
         self.lon = "lon" if "lon" in self.da.coords else "longitude"
         self.results = {}
+        self.annual = None
 
     # resampling daily data to years
     def make_yearly(self, how="mean"):
