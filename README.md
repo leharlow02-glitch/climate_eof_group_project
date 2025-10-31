@@ -1,11 +1,12 @@
 # Simple_climate_package
 
-The open-source Python package **simple_climate_package** reads in netcdf data from E-OBS, performs simple statistical tests and visualises the outputs. 
+The open-source Python package **simple_climate_package** reads in netcdf E_OBS data, performs simple statistical tests and visualises the outputs. 
 
 Statistical tests included in this package:
 - Minimum values
 - Maximum values
 - Mean values
+- mean cliatology values
 - Climate anomaly values
 - Linear regression
 
@@ -76,7 +77,7 @@ client.retrieve(dataset, request).download()
 
 # 2. Features
 An example analysis script using **simple_climate_package** is listed in the github repository.
-Start by specifying the path to you data file.
+Start by specifying the path to your data file.
 The data path is an input to many of our methods, so is useful to specify at the beginning of your analysis.
 
 ```python
@@ -188,7 +189,7 @@ This method saves a plot to a filepath specified in the arguement of the method.
 
 ![Screenshot](./plots/yearly_max/max_tg_for_1950.png)
 
-Note that **min_tot_time()** and **max_tot_time()** do not need to be called to use **plot_min_tot()** and **plot_max_tot()** respectively.
+Note that **min_tot()** and **max_tot()** do not need to be called to use **plot_min_tot()** and **plot_max_tot()** respectively.
 
 Instead of getting the total minimum/maximum value, you can specify the dates between which you want to calculate it.
 
