@@ -134,7 +134,7 @@ month_clim = tm.monthly_clim()
 tm.plot_monthly_climatology()
 ```
 
-![Screenshot](./plots/monthly_clim/mean_tg_for_1.png)
+![Screenshot](https://github.com/leharlow02-glitch/climate_eof_group_project/blob/hannah/plots/monthly_clim/mean%20tg%20for%201.png)
 
 
 clim_amon = tm.monthly_clim_Anom()
