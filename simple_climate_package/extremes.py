@@ -164,6 +164,15 @@ class CalcExtremes:
     def monthly_max(self):
         return self.tg.resample(time="1ME").max()
 
+    def monthly_min(self):
+        return self.tg.resample(time="1ME").min()
+
+    def yearly_max(self):
+        return self.tg.resample(time="1YE").max()
+
+    def yearly_min(self):
+        return self.tg.resample(time="1YE").min()
+
     def plot_yearly_max(self):
         
         # calculate the yearly mean:
@@ -253,15 +262,6 @@ class CalcExtremes:
             fig.tight_layout()
             plt.close()
             print(f'sved fig for {year_label}')
-
-    def monthly_min(self):
-        return self.tg.resample(time="1ME").min()
-
-    def yearly_max(self):
-        return self.tg.resample(time="1YE").max()
-
-    def yearly_min(self):
-        return self.tg.resample(time="1YE").min()
 
 # run from root of package
 # temp = TempExtremes('Data/Example_Data/e-obs_UK_ground_temp.nc')
