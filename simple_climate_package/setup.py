@@ -82,6 +82,7 @@ setup(
     version="1.0.0",
     description='Simple statistical analysis for E-OBS datasets',
     long_description=get_readme(),
+    long_description_content_type="text/markdown",
     license='MIT license',
     author='Hannah-Jane Wood, Lucy Harlow, Ofer Cohen',
     author_email='lucy.harlow@reuben.ox.ac.uk',
