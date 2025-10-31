@@ -79,6 +79,7 @@ client.retrieve(dataset, request).download()
 An example analysis script using **simple_climate_package** is listed in the github repository.
 Start by specifying the path to your data file.
 The data path is an input to many of our methods, so is useful to specify at the beginning of your analysis.
+Type the command below into your script, then manually input the filepath into the terminal when running your script.
 
 ```python
 data_path = input('Input the path to the data you want to analyse: ')
