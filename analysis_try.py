@@ -1,5 +1,6 @@
 from simple_climate_package.mean import CalcMean           # absolute import - run pytest from repo root
 from simple_climate_package.extremes import CalcExtremes
+from simple_climate_package.linear_regression import linear_regression
 import xarray as xr
 import matplotlib.pyplot as plt
 import os
@@ -32,3 +33,6 @@ tx.plot_min_between('1950-01-01', '1955-01-01')
 tx.plot_min_tot()
 tx.plot_yearly_max()
 tx.plot_yearly_min()
+
+tl = linear_regression(data_path)
+tl.quick_plot_signif_stippling()
