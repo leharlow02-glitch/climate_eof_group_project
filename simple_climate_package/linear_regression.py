@@ -193,7 +193,11 @@ class LinReg:
         self.results = ds_out
         return self.results
 
-    def quick_plot_signif_stippling(self, key="per_decade", out_dir="/root/climate_eof_group_project/plots/linear_regression/"):
+    def quick_plot_signif_stippling(self, key="per_decade"):
+        
+        self.annual = self.make_yearly()
+        self.results = self.grid_linear_regression()
+        
         # read in data
         field = self.results[key]
         p_val = self.results["p_value"]
@@ -203,8 +207,17 @@ class LinReg:
         lats = self.da[self.lat].values
         Lon, Lat = np.meshgrid(lons, lats)
 
+        # Get the current working directory
+        current_dir = os.getcwd()
+
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots')
+        os.makedirs(save_path, exist_ok=True)
+
         # create figure
-        fig, ax = plt.subplots(figsize=(7, 6))
+        # fig, ax = plt.subplots(figsize=(6, 6))
+        fig = plt.figure()
+        ax = plt.axes()
 
         # making significance mask
         p_95 = np.ma.masked_greater(p_val, 0.05)
@@ -213,43 +226,54 @@ class LinReg:
         vmin, vmax = np.nanmin(field), np.nanmax(field)
 
         # plotting
-        plot = plt.contourf(
+        mesh = plt.pcolormesh(
             Lon,
             Lat,
             field,
-            levels=100,
+            # levels=100,
             cmap=plt.get_cmap("hot_r"),
-            vmin=vmin,
-            vmax=vmax,
-            extend="both",
+            # vmin=vmin,
+            # vmax=vmax,
+            # extend="both",
         )
+        # plot = plt.contourf(
+        #     Lon,
+        #     Lat,
+        #     field,
+        #     levels=100,
+        #     cmap=plt.get_cmap("hot_r"),
+        #     vmin=vmin,
+        #     vmax=vmax,
+        #     extend="both",
+        # )
         plt.contourf(Lon, Lat, p_95, hatches=[".."], alpha=0.0)
 
         # creating colourbar
-        cbar = fig.colorbar(
-            plot, orientation="horizontal", shrink=0.7, pad=0.27
-        )
-        cbar.set_label("Change in slope per decade", rotation=0, fontsize=8)
-        tick_min, tick_max = np.nanmin(field), np.nanmax(field)
+        cbar = fig.colorbar(mesh, ax=ax, orientation="vertical")
+        # cbar = fig.colorbar(
+        #     plot, orientation="horizontal", shrink=0.7, pad=0.27
+        # )
+        cbar.set_label("Slope per decade")
+        # cbar.set_label("Change in slope per decade", rotation=0, fontsize=8)
+        # tick_min, tick_max = np.nanmin(field), np.nanmax(field)
         ticks = np.linspace(
             vmin, vmax, 6
         )  # creates 6 evenly spaced ticks
         cbar.set_ticks(ticks)
-        cbar.ax.set_xticklabels(
-            [f"{t:.2f}" for t in ticks]
-        )  # formats to 2 decimal places
+        # cbar.ax.set_xticklabels(
+        #     [f"{t:.2f}" for t in ticks]
+        # )  # formats to 2 decimal places
 
         # labelling axes
         ax.set_xlabel("Longitude", labelpad=15, fontsize=10)
         ax.set_ylabel("Latitude", labelpad=15, fontsize=10)
 
         #Save plot
-        os.makedirs(out_dir, exist_ok=True)
-        plt.title(f"Linear regression of {self.da}")
-        plt.savefig(out_dir + f' linear regression of {self.da}', dpi=150, bbox_inches="tight")
+        plt.title(f"Linear regression of {self.da.name}")
+        plt.savefig(save_path + f'/linear regression of {self.da.name}.png', bbox_inches="tight")
         fig.tight_layout()
 
         #show and close plot
         plt.show()
         plt.close()
-        print(f'sved fig')
+        print(f'saved trend fig')

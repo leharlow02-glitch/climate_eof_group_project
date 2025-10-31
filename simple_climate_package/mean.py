@@ -68,11 +68,19 @@ class CalcMean:
 
         return mean_map
 
-    def plot_mean_between(self, start, end, save_path='/root/climate_eof_group_project/plots'):
+    def plot_mean_between(self, start, end):
         # Identify and returns the mean temperature values between two dates and plots it to a map.
 
-        # create the diectory for the plots:
+        # Get the current working directory
+        current_dir = os.getcwd()
+
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots')
         os.makedirs(save_path, exist_ok=True)
+    
+        # Construct full path for the saved file
+        filename = f"Mean_{self.tg.name}_values_between_{start}_and_{end}.png"
+        filepath = os.path.join(save_path, filename)
 
         # select data between two dates
         selected_data = self.tg.sel(time=slice(start, end))
@@ -81,8 +89,8 @@ class CalcMean:
         mean_map = selected_data.mean(dim='time')
         qm = mean_map.plot(cmap='RdYlBu_r')          # xarray returns an Axes object
         ax = qm.axes
-        ax.set_title(f"Mean {self.tg.name} values between {start} and {end}")
-        ax.figure.savefig(save_path + f'/Mean_{self.tg.name}_values_between_{start}_and_{end}.png', bbox_inches='tight')
+        ax.set_title(f"Mean_{self.tg.name}_values_between_{start}_and_{end}")
+        ax.figure.savefig(filepath, bbox_inches='tight')
         plt.close(ax.figure)
 
         return mean_map
@@ -92,18 +100,26 @@ class CalcMean:
 
         return self.tg.mean(dim='time')
         
-    def plot_mean_tot_time(self, save_path='/root/climate_eof_group_project/plots/'):
+    def plot_mean_tot_time(self):
         # Identify the mean temperature over the whole dataset and plot
+        
+        # Get the current working directory
+        current_dir = os.getcwd()
 
-        # create the diectory for the plots:
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots')
         os.makedirs(save_path, exist_ok=True)
+    
+        # Construct full path for the saved file
+        filename = f"mean_time_tot_{self.tg.name}.png"
+        filepath = os.path.join(save_path, filename)
 
         # plot this data on a map
         mean_map = self.tg.mean(dim='time')
         qm = mean_map.plot(cmap='RdYlBu_r')
         ax = qm.axes
         ax.set_title(f"Overall mean {self.tg.name} values")
-        ax.figure.savefig(save_path + f'mean_time_tot_{self.tg.name}.png', bbox_inches='tight')
+        ax.figure.savefig(filepath, bbox_inches='tight')
         plt.close(ax.figure)
 
         return mean_map
@@ -114,7 +130,7 @@ class CalcMean:
     def yearly_mean(self):
         return self.tg.resample(time="1YE").mean()
     
-    def plot_yearly_mean(self,out_dir="/root/climate_eof_group_project/plots/yearly_mean/"):
+    def plot_yearly_mean(self):
         
         # calculate the yearly mean:
         yearly_ds = self.yearly_mean()
@@ -127,9 +143,13 @@ class CalcMean:
         vmin = float(da.min(skipna=True).values)
         vmax = float(da.max(skipna=True).values)
 
-        # create the diectory for the plots:
-        os.makedirs(out_dir, exist_ok=True)
+                # Get the current working directory
+        current_dir = os.getcwd()
 
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots','yearly_mean')
+        os.makedirs(save_path, exist_ok=True)
+    
         # cmap = "RdYlBu_r",
 
         # loop to plot over the yearly data:
@@ -152,7 +172,7 @@ class CalcMean:
             ax.set_xlabel('Longitude')
             ax.set_ylabel('Latitude')
             plt.title(f"Mean {var_name} for {year_label}")
-            plt.savefig(out_dir + f'mean {var_name} for {year_label}', dpi=150, bbox_inches="tight")
+            plt.savefig(save_path + f'/mean_{var_name}_for_{year_label}.png', dpi=150, bbox_inches="tight")
             fig.tight_layout()
             plt.close()
             print(f'sved fig for {year_label}')
@@ -244,7 +264,7 @@ class CalcMean:
         return anom
 
 
-    def plot_monthly_climatology(self,out_dir="/root/climate_eof_group_project/plots/monthly_clim/"):
+    def plot_monthly_climatology(self):
         
         # calculate the yearly mean:
         clim_ds = self.monthly_clim()
@@ -257,9 +277,13 @@ class CalcMean:
         vmin = float(da.min(skipna=True).values)
         vmax = float(da.max(skipna=True).values)
 
-        # create the diectory for the plots:
-        os.makedirs(out_dir, exist_ok=True)
+        # Get the current working directory
+        current_dir = os.getcwd()
 
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots','monthly_clim')
+        os.makedirs(save_path, exist_ok=True)
+    
         # cmap = "RdYlBu_r",
 
         # print(da) 
@@ -270,11 +294,15 @@ class CalcMean:
         var_name = self.tg.name
         # print(self.tg.name)
 
+        months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
         for idx, t in enumerate(times):
             single = da.isel(month=idx)
 
             # nice date label (YYYY)
-            month_label = str(t)
+            # month_label = str(t)            
+            month_label = months[idx]
+
 
             fig = plt.figure()
             ax = plt.axes()
@@ -284,27 +312,8 @@ class CalcMean:
             cbar.set_label(var_name)
             ax.set_xlabel('Longitude')
             ax.set_ylabel('Latitude')
-            plt.title(f"Mean {var_name} for {month_label}")
-            plt.savefig(out_dir + f'mean {var_name} for {month_label}', dpi=150, bbox_inches="tight")
+            plt.title(f"Mean climatology {var_name} for {month_label}")
+            plt.savefig(save_path + f'/mean_{var_name}_for_{month_label}.png', dpi=150, bbox_inches="tight")
             fig.tight_layout()
             plt.close()
             print(f'sved fig for {month_label}')
-
-# print('Example data for the UK can be found here on the github repository: /root/climate_eof_group_project/Data/Example_Data/e-obs_UK_ground_temp.nc' )
-# data_path = input('Input the path to the data you want to analyse: ')
-
-# tm = TempMean(data_path)
-# '''print(tm.mean_between('1950-01-01', '1955-01-01'))'''
-# tm.plot_mean_tot_time()
-# tm.plot_monthly_climatology()
-# tm.plot_mean_between('1950-01-01', '1955-01-01')
-# tm.plot_yearly_mean()
-# month_clim = tm.monthly_clim()
-# print(month_clim.shape)
-# clim_amon = tm.monthly_clim_Anom()
-# print(clim_amon.shape)
-# day_clim = tm.daily_clim()
-# print(day_clim.shape)
-# daily_amon = tm.daily_clim_Anom()
-# print(daily_amon.shape)
-
