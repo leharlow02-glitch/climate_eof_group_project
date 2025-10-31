@@ -46,8 +46,15 @@ class CalcExtremes:
         
         return min_map
 
-    def plot_min_between(self, start, end, save_path='/root/climate_eof_group_project/plots'):
+    def plot_min_between(self, start, end):
         # Identify the minimum temperature values between two dates and plot
+       
+        # Get the current working directory
+        current_dir = os.getcwd()
+
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots')
+        os.makedirs(save_path, exist_ok=True)
 
         # select data between two dates
         selected_data = self.tg.sel(time=slice(start, end))
@@ -73,11 +80,18 @@ class CalcExtremes:
 
         return max_map
     
-    def plot_max_between(self, start, end, save_path='/root/climate_eof_group_project/plots'):
+    def plot_max_between(self, start, end):
         # Identify the maximum temperature values between two dates and plot
 
         # select data between two dates
         selected_data = self.tg.sel(time=slice(start, end))
+       
+        # Get the current working directory
+        current_dir = os.getcwd()
+
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots')
+        os.makedirs(save_path, exist_ok=True)
 
         # plot this data on a map
         max_map = selected_data.max(dim='time')
@@ -98,8 +112,15 @@ class CalcExtremes:
         
         return min_map
 
-    def plot_min_tot(self, save_path='/root/climate_eof_group_project/plots'):
+    def plot_min_tot(self):
         # Identify the minimum temperature over the whole dataset and plot
+        
+        # Get the current working directory
+        current_dir = os.getcwd()
+
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots')
+        os.makedirs(save_path, exist_ok=True)
 
         # plot this data on a map
         min_map = self.tg.min(dim='time')
@@ -120,8 +141,15 @@ class CalcExtremes:
         
         return max_map
 
-    def plot_max_tot(self, save_path='/root/climate_eof_group_project/plots'):
+    def plot_max_tot(self):
         # Identify the maximum temperature over the whole dataset and plot
+        
+        # Get the current working directory
+        current_dir = os.getcwd()
+
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots')
+        os.makedirs(save_path, exist_ok=True)
 
         # plot this data on a map
         max_map = self.tg.max(dim='time')
@@ -136,7 +164,7 @@ class CalcExtremes:
     def monthly_max(self):
         return self.tg.resample(time="1ME").max()
 
-    def plot_yearly_max(self,out_dir="/root/climate_eof_group_project/plots/yearly_max/"):
+    def plot_yearly_max(self):
         
         # calculate the yearly mean:
         yearly_ds = self.yearly_max()
@@ -149,8 +177,12 @@ class CalcExtremes:
         vmin = float(da.min(skipna=True).values)
         vmax = float(da.max(skipna=True).values)
 
-        # create the diectory for the plots:
-        os.makedirs(out_dir, exist_ok=True)
+        # Get the current working directory
+        current_dir = os.getcwd()
+
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots', 'yearly_max')
+        os.makedirs(save_path, exist_ok=True)
 
         # loop to plot over the yearly data:
         times = da.time.values
@@ -172,12 +204,12 @@ class CalcExtremes:
             ax.set_xlabel('Longitude')
             ax.set_ylabel('Latitude')
             plt.title(f"Max {var_name} for {year_label}")
-            plt.savefig(out_dir + f'max {var_name} for {year_label}', dpi=150, bbox_inches="tight")
+            plt.savefig(save_path + f'max {var_name} for {year_label}', dpi=150, bbox_inches="tight")
             fig.tight_layout()
             plt.close()
             print(f'sved fig for {year_label}')
 
-    def plot_yearly_min(self,out_dir="/root/climate_eof_group_project/plots/yearly_min/"):
+    def plot_yearly_min(self):
         
         # calculate the yearly mean:
         yearly_ds = self.yearly_min()
@@ -190,8 +222,12 @@ class CalcExtremes:
         vmin = float(da.min(skipna=True).values)
         vmax = float(da.max(skipna=True).values)
 
-        # create the diectory for the plots:
-        os.makedirs(out_dir, exist_ok=True)
+        # Get the current working directory
+        current_dir = os.getcwd()
+
+        # Create a 'plots' subfolder inside the current directory
+        save_path = os.path.join(current_dir, 'plots', 'yearly_min')
+        os.makedirs(save_path, exist_ok=True)
 
         # loop to plot over the yearly data:
         times = da.time.values
@@ -213,7 +249,7 @@ class CalcExtremes:
             ax.set_xlabel('Longitude')
             ax.set_ylabel('Latitude')
             plt.title(f"Min {var_name} for {year_label}")
-            plt.savefig(out_dir + f'min {var_name} for {year_label}', dpi=150, bbox_inches="tight")
+            plt.savefig(save_path + f'min {var_name} for {year_label}', dpi=150, bbox_inches="tight")
             fig.tight_layout()
             plt.close()
             print(f'sved fig for {year_label}')

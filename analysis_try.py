@@ -1,5 +1,5 @@
-from mean import CalcMean           # absolute import - run pytest from repo root
-from extremes import CalcExtremes
+from simple_climate_package.mean import CalcMean           # absolute import - run pytest from repo root
+from simple_climate_package.extremes import CalcExtremes
 import xarray as xr
 import matplotlib.pyplot as plt
 import os
