@@ -254,15 +254,6 @@ class CalcExtremes:
             plt.close()
             print(f'sved fig for {year_label}')
 
-    def monthly_min(self):
-        return self.tg.resample(time="1ME").min()
-
-    def yearly_max(self):
-        return self.tg.resample(time="1YE").max()
-
-    def yearly_min(self):
-        return self.tg.resample(time="1YE").min()
-
 # run from root of package
 # temp = TempExtremes('Data/Example_Data/e-obs_UK_ground_temp.nc')
 

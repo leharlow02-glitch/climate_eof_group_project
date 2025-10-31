@@ -3,14 +3,53 @@ import io
 
 
 def get_version():
-    # Get version number from the simple_climate_package module.
-    import os
-    import sys
+    """
+    Safely obtain VERSION from simple_climate_package/version_info.py without importing
+    the package. Executes that single file in a small namespace and reads VERSION.
+    Validates the version string using packaging.version.
+    """
+    import re
+    from pathlib import Path
 
-    sys.path.append(os.path.abspath('simple_climate_package'))
-    from simple_climate_package.version_info import VERSION as version
-    sys.path.pop()
-    return version
+    version_file = Path(__file__).parent / "simple_climate_package" / "version_info.py"
+    if not version_file.exists():
+        raise RuntimeError(f"version_info.py not found at {version_file}")
+    code = version_file.read_text(encoding="utf8")
+
+    # Execute the file in a restricted namespace to capture variables (safe for static files)
+    ns: dict = {}
+    try:
+        exec(compile(code, str(version_file), "exec"), {}, ns)
+    except Exception as e:
+        raise RuntimeError(f"Failed to execute version_info.py: {e!r}")
+
+    # Try to get VERSION
+    version = ns.get("VERSION")
+    if version is None:
+        # Fallback: try to parse a literal tuple or VERSION_INT if present
+        # e.g. VERSION_INT = 1, 0, 0
+        m = re.search(r"^VERSION_INT\s*=\s*(.+)$", code, re.M)
+        if m:
+            try:
+                # Evaluate the tuple expression safely using ast.literal_eval
+                import ast
+                version_int = ast.literal_eval(m.group(1))
+                version = ".".join(str(int(x)) for x in version_int)
+            except Exception:
+                pass
+
+    if not version:
+        raise RuntimeError("Unable to determine VERSION from simple_climate_package/version_info.py")
+
+    # Validate the version string is PEP 440 compatible
+    try:
+        from packaging.version import Version as _V
+        _V(str(version))
+    except Exception as e:
+        raise RuntimeError(f"Invalid version string from version_info.py: {version!r}: {e}")
+
+    return str(version)
+
 
 
 def get_readme():
@@ -40,7 +79,7 @@ setup(
     name='simple_climate_package',
 
     # Version
-    version=get_version(),
+    version="1.0.0",
     description='Simple statistical analysis for E-OBS datasets',
     long_description=get_readme(),
     license='MIT license',

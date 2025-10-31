@@ -8,7 +8,7 @@ from simple_climate_package.loader import DataReader
 
 ###Writing linear regression calculation and plotting class###
 
-class linear_regression:
+class LinReg:
     """
     Load dataset, compute anomalies (optional), calculate
     linear regression for each point across lon-lat grid, and plot
