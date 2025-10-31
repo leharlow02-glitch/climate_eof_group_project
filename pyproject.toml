@@ -1,11 +1,3 @@
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
-
-[project]
-name = "simple_climate_package"
-version = "0.0.1"
-description = "Simple statistical analysis for E-OBS datasets"
-readme = "README.md"
-authors = [{ name = "Hannah-Jane Wood", email = "lucy.harlow@reuben.ox.ac.uk" }]
-dependencies = []

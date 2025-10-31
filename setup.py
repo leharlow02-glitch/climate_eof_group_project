@@ -1,4 +1,4 @@
-'''from setuptools import setup, find_packages
+from setuptools import setup, find_packages
 import io
 
 
@@ -79,7 +79,7 @@ setup(
     name='simple_climate_package',
 
     # Version
-    version=get_version(),
+    version="1.0.0",
     description='Simple statistical analysis for E-OBS datasets',
     long_description=get_readme(),
     license='MIT license',
@@ -108,4 +108,3 @@ setup(
     },
     python_requires='>=3.11',
 )
-'''
