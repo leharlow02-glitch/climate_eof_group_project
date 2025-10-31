@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+'''from setuptools import setup, find_packages
 import io
 
 
@@ -108,3 +108,4 @@ setup(
     },
     python_requires='>=3.11',
 )
+'''

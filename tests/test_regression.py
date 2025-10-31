@@ -4,7 +4,7 @@ import pandas as pd
 import xarray as xr
 from numpy.testing import assert_allclose
 
-from simple_climate_package.linear_regression import linear_regression
+from simple_climate_package.linear_regression import LinReg
 
 
 # Making tests for linear regression class functions
@@ -38,7 +38,7 @@ def test_make_yearly_resamples_correctly(tmp_path):
     p = tmp_path / "synthetic_daily.nc"
     ds.to_netcdf(p)
 
-    lr = linear_regression(str(p))
+    lr = LinReg(str(p))
     annual = lr.make_yearly()
     expected_years = np.array([2000, 2001, 2002])
     got_years = annual["time"].dt.year.values
@@ -56,7 +56,7 @@ def test_regress_yearly_recovers_slope_and_masks(tmp_path):
     p = tmp_path / "synthetic_daily2.nc"
     ds.to_netcdf(p)
 
-    lr = linear_regression(str(p))
+    lr = LinReg(str(p))
     lr.make_yearly()
     # Require all 3 years to be present
     res = lr.grid_linear_regression(min_obs=3)
@@ -93,7 +93,7 @@ def test_regress_yearly_recovers_slope_and_masks(tmp_path):
     p2 = tmp_path / "synthetic_daily3.nc"
     ds2.to_netcdf(p2)
 
-    lr2 = linear_regression(str(p2))
+    lr2 = LinReg(str(p2))
     lr2.make_yearly()
     res2 = lr2.grid_linear_regression(min_obs=3)  # require 3 valid years
 
