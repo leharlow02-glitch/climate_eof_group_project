@@ -50,11 +50,13 @@ pip install -r virtual_environment_requirements.txt
 
 ## Installing data
 
-This package was developed to work with E-OBS daily gridded mean temperature data from 1950 to present. 
+This package was developed to work with E-OBS daily data from 1950 to present. 
 
 A sample dataset for data over The United Kingdom from 1950 to present can be found in the Data folder located in the simple_climate_package folder.
 
 To use your own data, please copy this code into a script.
+
+Please note you need a cdsapi API file stored on your computer, see https://cds.climate.copernicus.eu/how-to-api for more information. 
 
 ```python
 import cdsapi
@@ -62,7 +64,7 @@ import cdsapi
 dataset = "insitu-gridded-observations-europe"
 request = {
     "product_type": "ensemble_mean",
-    "variable": ["mean_temperature"],
+    "variable": ["<insert_climate_variable>"],
     "grid_resolution": "0_25deg",
     "period": "full_period",
     "version": ["30_0e"]
@@ -85,6 +87,7 @@ data_path = input('Input the path to the data you want to analyse: ')
 To conduct analysis using mean data, import the class CalcMean from **simple_climate_package**.
 Input the path to your data file into CalcMean and label this as 'tm'.
 'tm' is your temperature instance and what will be used to conduct your analysis.
+'tm' can be subsituted to reflect your selected climate variable e.g. 'precip'.
 
 ```python
 from simple_climate_package.mean import CalcMean
@@ -125,7 +128,7 @@ Calling **plot_yearly_mean()** creates a plot of the mean temperature for every 
 yearly_mean = tm.yearly_mean()
 tm.plot_yearly_mean()
 ```
-For studying monthly climatology (monthly trends over the entire timeseries), call **monthly_clim()**.
+For studying monthly climatology (long-term average conditions for each calendar month over the entire timeseries), call **monthly_clim()**.
 **Monthly_clim()** returns a dataset with 12 values (one per month) representing the long-term monthly climatology.
 Calling **tm.plot_monthly_climatology()** plots the climatology for each month.
 
@@ -136,7 +139,7 @@ tm.plot_monthly_climatology()
 
 ![Screenshot](./plots/monthly_clim/mean_tg_for_Apr.png)
 
-Instead of monthly trends, daily climatology (daily trends over the entire timeseries) can be calculating by calling **daily_clim**.
+Instead of monthly trends, daily climatology (daily long-term average conditions over the entire timeseries) can be calculating by calling **daily_clim**.
 There is not a plotting function for daily climatology due to the large volume of days in the dataset.
 
 ```python
