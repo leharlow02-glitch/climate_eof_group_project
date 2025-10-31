@@ -96,7 +96,7 @@ tm = CalcMean(data_path)
 To obtain the dataset of the mean temperature data for each grid pixel over the entire timeseries, call **mean_tot_time()**.
 
 ```python
-tm.mean_tot_time()
+mean_tot = tm.mean_tot_time()
 ```
 
 A visualisation of the mean temperature over the entire timeseries can be called using **plot_mean_tot_time()**.
@@ -125,7 +125,7 @@ Calling **plot_yearly_mean()** creates a plot of the mean temperature for every 
 yearly_mean = tm.yearly_mean()
 tm.plot_yearly_mean()
 ```
-For studying climatology (monthly trends over the entire timeseries), call **monthly_clim()**.
+For studying monthly climatology (monthly trends over the entire timeseries), call **monthly_clim()**.
 **Monthly_clim()** returns a dataset with 12 values (one per month) representing the long-term monthly climatology.
 Calling **tm.plot_monthly_climatology()** plots the climatology for each month.
 
@@ -136,12 +136,77 @@ tm.plot_monthly_climatology()
 
 ![Screenshot](https://github.com/leharlow02-glitch/climate_eof_group_project/blob/hannah/plots/monthly_clim/mean%20tg%20for%201.png)
 
+Instead of monthly trends, daily climatology (daily trends over the entire timeseries) can be calculating by calling **daily_clim**.
+There is not a plotting function for daily climatology due to the large volume of days in the dataset.
 
-clim_amon = tm.monthly_clim_Anom()
+```python
 day_clim = tm.daily_clim()
-daily_amon = tm.daily_clim_Anom()
+```
+
+Climatology is used to calculate the climate anomaly.
+The monthly climate anomaly, calculated by subtracting the long-term monthly climatology from the monthly mean, is called using **monthly_clim_Anom()**.
+**Monthly_clim_Anom()** provides a dataset for climate anomaly of every month in the dataset.
+The daily climate anomaly, calculated by subtracting the long-term daily climatology from the temperature for each day in the data, is called using **daily_climate_Anom()**
+
+```python
+clim_anom = tm.monthly_clim_Anom()
+daily_anom = tm.daily_clim_Anom()
+```
+
+Climate anomalies are not plotted in this package but can be used for further analysis such as fair comparison of global trends.
+
+## Calculating extreme values
+To conduct analysis using minimum or maximum data, import the class CalcExtremes from **simple_climate_package**.
+Input the path to your data file into CalcExtremes and label this as 'tx'.
+'tx' is your temperature instance and what will be used to conduct your analysis.
+
+```python
+from simple_climate_package.mean import CalcExtremes
 
 
+tx = CalcMean(data_path)
+```
+To obtain the dataset of the minimum temperature data for each grid pixel over the entire timeseries, call **min_tot()**.
+To obtain the dataset of the maximum temperature data for each grid pixel over the entire timeseries, call **max_tot()**.
+
+```python
+min_tot = tx.min_tot()
+max_tot = tx.max_tot()
+```
+
+A visualisation of the minimum or maximum temperature over the entire timeseries can be called using **plot_min_tot()** or **plot_max_tot()** respectively.
+
+```python
+tx.plot_min_tot()
+tx.plot_max_tot()
+```
+
+This method saves a plot to a filepath specified in the arguement of the method.
+
+![Screenshot](https://github.com/leharlow02-glitch/climate_eof_group_project/blob/hannah/plots/yearly_min/min%20tg%20for%201950.png)
+
+Note that **min_tot_time()** and **max_tot_time()** does not need to be called to use **plot_min_tot()** and **plot_max_tot()** respectively.
+
+Instead of getting the total minimum/maximum value, you can specify the dates between which you want to calculate it.
+
+```python
+min_between = tx.min_between(start_date, end_date)
+tx.plot_min_between(start_date, end_date)
+max_between = tx.max_between(start_date, end_date)
+tx.plot_max_between(start_date, end_date)
+```
+
+To get a dataset for the minimum or maximum temperature of every grid pixel per year, call **yearly_min()** or **yearly_max()** respectively.
+Calling **plot_yearly_min()** or **plot_yearly_max()** creates a plot of the minimum or maximum temperature for every year in the dataset.
+
+```python
+yearly_min = tx.yearly_min()
+tx.plot_yearly_min()
+yearly_max = tx.yearly_max()
+tx.plot_yearly_max()
+```
+
+## Linear Regression
 
 # 3. Authors & Contributions
 
