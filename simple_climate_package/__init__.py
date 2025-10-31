@@ -7,3 +7,10 @@ temperature data over Europe
 from .version_info import VERSION_INT, VERSION  # noqa
 
 # Import main classes
+# simple_climate_package/__init__.py
+from .mean import CalcMean
+from .extremes import CalcExtremes
+from .loader import DataReader
+from .linear_regression import LinReg
+__all__ = ["CalcMean", "CalcExtremes",'DataReader','LinReg']
+__version__ = "1.0.0"   # or import from _version.py
