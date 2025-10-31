@@ -11,5 +11,6 @@ from .version_info import VERSION_INT, VERSION  # noqa
 from .mean import CalcMean
 from .extremes import CalcExtremes
 from .loader import DataReader
-__all__ = ["CalcMean", "CalcExtremes",'DataReader']
-__version__ = "0.1.0"   # or import from _version.py
+from .linear_regression import LinReg
+__all__ = ["CalcMean", "CalcExtremes",'DataReader','LinReg']
+__version__ = "1.0.0"   # or import from _version.py
